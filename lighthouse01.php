@@ -2,9 +2,9 @@
 // run this in a directory with these command lines:
 // cd c:\path_to_lighthouse001.php
 // c:\path_to_php_directory\php.exe -q lighthouse001.php
-// it will create a lighthouse json file for each url
-// it will create a out1.csv   with a notation for each url
-// it will create a out1.html  with a notation for each url
+// it will create json and html file for each url
+// it will create a out1.csv                            
+// it will create a lighthouse-score-rank-for-pwa.html  
 
 
 // for the ones commented, the manifest file has non been founded
@@ -330,6 +330,12 @@ if(sizeof($lesManifestsEtUrls)>0){
    fclose($fd);
   }
   
+  if($fdlesManifestsEtUrls=fopen('lesManifestsEtUrls.php','w')){ 
+   fwrite($fdlesManifestsEtUrls, '<'.'?php'."\r\n".'$lesManifestsEtUrls=' . var_export( $lesManifestsEtUrls,true ) .';' ); 
+   fclose($fdlesManifestsEtUrls); 
+  }
+  
+  
   if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
    $line='';
    
@@ -402,10 +408,10 @@ if(sizeof($lesManifestsEtUrls)>0){
      $line='<tr>'.
       '<td class="centered">'.$rank          . '<br />'.substr($v1['global-score'],0,6) . '</td>' .
       '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';"><table  style="width:100%;"><tr>'.
-       '<td style="width:50px;"><a target="_blank" href="'.$v1['url'].'" alt="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+       '<td style="width:50px;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        '<img src="'.$icon.'" height="48" width="48" /> '.
        '</a></td>'.
-       '<td style="text-align:center;width:200px;"><a class="l1" target="_blank" href="'.$v1['url'].'" alt="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+       '<td style="text-align:center;width:200px;"><a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</td>'.
        '<td style="width:50px;"></td></tr></table></td>' . 
       '<td colspan="5" style="max-width:50%;font-size:0.8em;">'                 .

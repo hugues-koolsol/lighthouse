@@ -31,7 +31,6 @@ $urls=array(
  'https://adaptivewebdesign.info/1st-edition/read/index.html',
  'https://aidoru.tk/',
  'https://www.sscheduler.com/v3/index.php?launcher=true',
- 'https://www.progressivewebflap.com/index.html',
  'https://www.ventureharbour.com/',
  'https://helloworldemojis.hwalab.com/',
  'https://vrixe.com/app/pwa.html',
@@ -66,6 +65,31 @@ $urls=array(
  'https://vuepress.vuejs.org/',
  'https://www.infiniteimaginations.co/index.html#/hello/',
  'https://airhorner.com/',
+ 'https://so-pwa.firebaseapp.com/',
+ 'https://headline.tooo.io/',
+ 'https://expancio.com/',
+ 'https://getunitrack.com/',
+ 'https://pwa-directory.appspot.com/pwas/5648229619204096',
+ 'https://pwa-directory.appspot.com/pwas/5649025286537216',
+ 'https://amp.scrabble123.net/',
+ 'https://linuxhub.it/pwa/index.html',
+ 'https://thenotquiz.com/',
+ 'https://m.reliefweb.int/',
+ 'https://michaelhsu.tw/index.html',
+ 'https://pwa.ng/',
+ 'https://ergenekonyigit.github.io/',
+ 'https://huffduffer.com/',
+ 'https://www.stevepdp.com/noise-machine/index.html',
+ 'https://shuttling.org/',
+ 'https://noushevr.github.io/',
+ 'https://use-the-platform.com/periodic-weather/',
+ 'https://www.leasingrechnen.at/',
+ 'https://www.afdb.org/en/',
+ 'https://closerinti.me/',
+ 'https://www.limeroad.com/?start_url=WEBAPP',
+ 'https://www.chromestatus.com/features',
+ 'https://hnpwa-firebase.firebaseapp.com/',
+ 
 // 'https://instasee.me/', // KO
 // 'https://ademola.adegbuyi.me/', // KO
 // 'https://pwa.compellia.com/', // KO
@@ -75,6 +99,8 @@ $urls=array(
 // 'https://developers.google.com/web/tools/workbox/', // KO
 // 'https://helloworldpwa.applbr.com/', // KO
 // 'https://state-of-the-web.com/', // KO
+// 'https://www.progressivewebflap.com/index.html', // KO
+
 
 // 'https://vue-hn.now.sh/top', // not 100 % pwa
 

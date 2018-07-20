@@ -40,7 +40,6 @@ $urls=array(
  'https://www.vitormalencar.com/?utm_medium=web_app_manifest',
  'https://www.zpeed.in/', //
  'https://restbasis.com/about',
- 'https://material.money/',
  'https://sii.im/playground/takt/index.html',
  'https://know-it-all.io/',
  'https://gusachenko.github.io/',
@@ -89,7 +88,14 @@ $urls=array(
  'https://www.limeroad.com/?start_url=WEBAPP',
  'https://www.chromestatus.com/features',
  'https://hnpwa-firebase.firebaseapp.com/',
+ 'https://marvelapi.iondrimbafilho.me/',
+ 'https://wow-character-lookup.firebaseapp.com/',
+ 'https://ng-pokedex.firebaseapp.com/pokemon',
+ 'https://wickeyappstore.com/',
+ 'https://relaxing.world/',
+ 'https://shapeshifter.design/',
  
+// 'https://material.money/',
 // 'https://instasee.me/', // KO
 // 'https://ademola.adegbuyi.me/', // KO
 // 'https://pwa.compellia.com/', // KO
@@ -105,26 +111,17 @@ $urls=array(
 // 'https://vue-hn.now.sh/top', // not 100 % pwa
 
 // canary 69.0.3488.0 bugs on these pages when an action is done
-// 'https://ng-pokedex.firebaseapp.com/pokemon',
-// 'https://wickeyappstore.com/',
-// 'https://shapeshifter.design/',
-// 'https://relaxing.world/',
-// 'https://wow-character-lookup.firebaseapp.com/',
 
 // Error: connect EADDRINUSE 127.0.0.1:53134    at Object._errnoException (util.js:1022:11)       at _exceptionWithHostPort (util.js:1044:20)     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
 
-// 'https://marvelapi.iondrimbafilho.me/',
 
 );
 /*
-// for test only
+// for test only, reduce the size of the array of urls
 $urls=array(  
+ 'https://airhorner.com/',
+ 'https://closerinti.me/',
  'https://www.koolsol.com/',
-// 'https://www.infiniteimaginations.co/index.html#/hello/',
-// 'https://airhorner.com/',
- 'https://www.zpeed.in/', 
- 'https://shop.polymer-project.org/', // <base = "">
-
 );
 */
 
@@ -263,7 +260,10 @@ foreach( $urls as $k1 => $v1){
    }
    
    $fichier1=rawurlencode($v1).'.lighthouse.json';   
-   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --quiet --output json >'.$fichier1."\r\n";
+   // launch lighthouse : adjust the path to reach thr lighthouse.cmd
+   // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
+   // --max-wait-for-load 10000       : after 10 seconds, abort !!
+   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.'  --max-wait-for-load 10000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
    
    passthru($cmd1); // run it !
 
@@ -292,7 +292,10 @@ foreach( $urls as $k1 => $v1){
 //===============================================================================================================================
 function cmp01($a, $b){
  if($a['global-score'] == $b['global-score']) {
-  return 0;
+  if($a['url'] == $b['url']) {
+   return 0;
+  }
+  return ($a['url'] < $b['url']) ? -1 : 1;
  }
  return ($a['global-score'] > $b['global-score']) ? -1 : 1;
 } 
@@ -362,7 +365,15 @@ if(sizeof($lesManifestsEtUrls)>0){
   }
   
   
+  
   if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
+   $count=0;
+   foreach($lesManifestsEtUrls as $k1=> $v1){
+    $jsonMan=json_decode($v1['manifestContent'],true);
+    if(!is_null($jsonMan)){
+     $count++;
+    }
+   }
    $line='';
    
    $line.='<html lang="en">'."\r\n";
@@ -396,9 +407,11 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo<p>' ."\r\n";
    $line.='<p>This list has been updated the '.date('Y-m-d').'<p>' ."\r\n";
    $line.='<table border="1">' ."\r\n";
-   $line.='<tr><th>Rank<br />score</th><th>app</th><th colspan="5" style="max-width:50%;font-size:0.8em;">pwa,perf.,accessibility,<br />best-practices,seo</th></tr>' ."\r\n";
+   $line.='<tr><th>Rank<br />score</th><th>apps ('.$count.')</th><th colspan="5" style="max-width:50%;font-size:0.8em;">pwa,perf.,accessibility,<br />best-practices,seo</th></tr>' ."\r\n";
    fwrite($fd,$line);
    $rank=0;
+   $rankGlobal=0;
+   $scorePrec=0;
    foreach($lesManifestsEtUrls as $k1=> $v1){
      
     $jsonMan=json_decode($v1['manifestContent'],true);
@@ -430,9 +443,14 @@ if(sizeof($lesManifestsEtUrls)>0){
      if($icon==''){
       echo __LINE__ . ' icon not founded = <pre>' . var_export( $v1 , true ) . '</pre>' ; 
      }
-     $rank++; 
+     $score=substr($v1['global-score'],0,6);
+     $rankGlobal++;
+     if($scorePrec!=$score){
+      $rank=$rankGlobal; 
+     }
+     $scorePrec=$score;
      $line='<tr>'.
-      '<td class="centered">'.$rank          . '<br />'.substr($v1['global-score'],0,6) . '</td>' .
+      '<td class="centered">'.$rank.'/'.$count.'<br />'.$score. '</td>' .
       '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';"><table  style="width:100%;"><tr>'.
        '<td style="width:50px;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        '<img src="'.$icon.'" height="48" width="48" /> '.
@@ -457,6 +475,8 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line= '</html>' ."\r\n";  fwrite($fd,$line);
    fclose($fd);
   }
+  
+  
  
  
  }

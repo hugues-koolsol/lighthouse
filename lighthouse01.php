@@ -365,7 +365,12 @@ if(sizeof($lesManifestsEtUrls)>0){
   }
   
   
+
   
+
+
+  
+  // build the final html file
   if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
    $count=0;
    foreach($lesManifestsEtUrls as $k1=> $v1){
@@ -406,6 +411,8 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo<p>' ."\r\n";
    $line.='<p>This list has been updated the '.date('Y-m-d').'<p>' ."\r\n";
+   $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
+   $line.='<p>Do not forget to play koolsol ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
    $line.='<table border="1">' ."\r\n";
    $line.='<tr><th>Rank<br />score</th><th>apps ('.$count.')</th><th colspan="5" style="max-width:50%;font-size:0.8em;">pwa,perf.,accessibility,<br />best-practices,seo</th></tr>' ."\r\n";
    fwrite($fd,$line);
@@ -449,32 +456,50 @@ if(sizeof($lesManifestsEtUrls)>0){
       $rank=$rankGlobal; 
      }
      $scorePrec=$score;
+     if($count!=1){
+      $couleur=(255/($count-1))*$rank-(255/($count-1));
+     }else{
+      $couleur=0;      
+     }
+     $couleurHex=dechex($couleur);
+     $couleurHex=strlen($couleurHex)==1?'0'.$couleurHex:$couleurHex;
+     if($rank==1){
+      $theColor='00d000';
+      $theBorderColor='border:2px red solid;';
+     }else{
+      $theColor=$couleurHex.'ff00';
+      $theBorderColor='border:2px #'.$couleurHex.'ff00'.' solid;';
+      $theBorderColor='';
+     }
+     
      $line='<tr>'.
-      '<td class="centered">'.$rank.'/'.$count.'<br />'.$score. '</td>' .
-      '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';"><table  style="width:100%;"><tr>'.
+      '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.'">'.$rank.'/'.$count.'<br />'.$score. '</td>' .
+      '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'"><table  style="width:100%;"><tr>'.
        '<td style="width:50px;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        '<img src="'.$icon.'" height="48" width="48" /> '.
        '</a></td>'.
        '<td style="text-align:center;width:200px;"><a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</td>'.
        '<td style="width:50px;"></td></tr></table></td>' . 
-      '<td colspan="5" style="max-width:50%;font-size:0.8em;">'                 .
+      '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.8em;'.$theBorderColor.'">'                 .
       ''.$v1['pwa-score']                .
       ','.$v1['performance-score']        .
       ','.$v1['accessibility-score']      .
       ','.$v1['best-practices-score']     .
       ','.$v1['seo-score']                . 
-      '<br /><a style="display:block;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>' .
+      '<br /><a style="display:block;width:80%;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>' .
       ''.'</td>' .
       "</tr>\r\n" ;
      fwrite($fd,$line);
     }
    }
-   $line= '</table>' ."\r\n";  fwrite($fd,$line);
+   $line= '</table>'."\r\n";  fwrite($fd,$line);
    $line= '</body>' ."\r\n";  fwrite($fd,$line);
    $line= '</html>' ."\r\n";  fwrite($fd,$line);
    fclose($fd);
   }
+    
+  
   
   
  

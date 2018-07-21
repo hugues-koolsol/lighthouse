@@ -1,7 +1,7 @@
 <?php
 // run this in a directory with these command lines:
 // cd c:\path_to_lighthouse001.php
-// c:\path_to_php_directory\php.exe -q lighthouse001.php
+// c:\path_to_php_bin_directory\php.exe -q lighthouse001.php
 // it will create json and html file for each url
 // it will create a out1.csv                            
 // it will create a lighthouse-score-rank-for-pwa.html  
@@ -68,8 +68,6 @@ $urls=array(
  'https://headline.tooo.io/',
  'https://expancio.com/',
  'https://getunitrack.com/',
- 'https://pwa-directory.appspot.com/pwas/5648229619204096',
- 'https://pwa-directory.appspot.com/pwas/5649025286537216',
  'https://amp.scrabble123.net/',
  'https://linuxhub.it/pwa/index.html',
  'https://thenotquiz.com/',

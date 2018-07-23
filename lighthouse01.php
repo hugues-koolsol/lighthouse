@@ -379,8 +379,6 @@ if(sizeof($lesManifestsEtUrls)>0){
   
 
   
-
-
   
   // build the final html file
   if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
@@ -506,6 +504,12 @@ if(sizeof($lesManifestsEtUrls)>0){
     }
    }
    $line= '</table>'."\r\n";  fwrite($fd,$line);
+   
+   
+   @include('lighthouse-write-google-tag.php'); // optional : writes the google analytics code at the end of the file ( see the source genetated at the end of this page : http://www.mypitself.com/lighthouse-score-rank-for-pwa.html)
+   
+   
+   
    $line= '</body>' ."\r\n";  fwrite($fd,$line);
    $line= '</html>' ."\r\n";  fwrite($fd,$line);
    fclose($fd);

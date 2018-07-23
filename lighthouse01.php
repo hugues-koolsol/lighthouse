@@ -77,7 +77,6 @@ $urls=array(
  'https://ergenekonyigit.github.io/',
  'https://huffduffer.com/',
  'https://www.stevepdp.com/noise-machine/index.html',
- 'https://shuttling.org/',
  'https://noushevr.github.io/',
  'https://use-the-platform.com/periodic-weather/',
  'https://www.leasingrechnen.at/',
@@ -92,8 +91,23 @@ $urls=array(
  'https://wickeyappstore.com/',
  'https://relaxing.world/',
  'https://shapeshifter.design/',
+ 'https://nhm.ac.uk/naturenauts/register',
+ 'https://tomitm.github.io/appmanifest/',
+ 'https://advent-calendar.glitch.me/',
+ 'https://pwa.topicdeck.com/',
+ 'https://www.restorebin.com/',
+ 'https://igenapps.com/',
+ 'https://milanojs.com/',
+ 'https://snake-pwa.github.io/',
+ 'https://www.womentechmakers.com/',
+ 'https://1tuner.com/',
+ 'https://www.decorpad.com/amp/?homescreen=1',
+ 'https://www.tailorpost.com/de-at/',
+ 'https://wetainment.com/',
+ 'https://grrd01.github.io/4inaRow/index.html',
  
-// 'https://material.money/',
+// 'https://shuttling.org/', // KO
+// 'https://material.money/', // KO
 // 'https://instasee.me/', // KO
 // 'https://ademola.adegbuyi.me/', // KO
 // 'https://pwa.compellia.com/', // KO

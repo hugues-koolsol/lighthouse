@@ -34,7 +34,6 @@ $urls=array(
  'https://www.ventureharbour.com/',
  'https://helloworldemojis.hwalab.com/',
  'https://vrixe.com/app/pwa.html',
- 'https://preact-pwa.appspot-preview.com/',
  'https://www.koolsol.com/',
  'https://mcslite.netlify.com/index.html',
  'https://www.vitormalencar.com/?utm_medium=web_app_manifest',
@@ -105,6 +104,12 @@ $urls=array(
  'https://www.tailorpost.com/de-at/',
  'https://wetainment.com/',
  'https://grrd01.github.io/4inaRow/index.html',
+ 'https://feuerwehr-eisolzried.de/',
+ 'https://m.weibo.cn/',
+ 'https://fr.mappy.com/',
+ 'https://dk.trustpilot.com/',
+ 'https://avia.yandex.ua/?utm_medium=link',
+ 'https://www.euroki.org/?utm_medium=pwa-icon',
  
 // 'https://shuttling.org/', // KO
 // 'https://material.money/', // KO
@@ -138,9 +143,11 @@ $urls=array(
 */
 
 $lesManifestsEtUrls=array();
-
+$countUrl=0;
+$sizeOfurls=sizeof($urls);
 foreach( $urls as $k1 => $v1){
- echo __LINE__ . ' ' . $v1."\r\n";
+ $countUrl++;
+ echo __LINE__ . ' ' . $countUrl . '/' . $sizeOfurls . ' url='. $v1."\r\n";
  $ch = curl_init();
 
  curl_setopt($ch, CURLOPT_HEADER         , 0);
@@ -378,8 +385,6 @@ if(sizeof($lesManifestsEtUrls)>0){
   
   
 
-  
-  
   // build the final html file
   if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
    $count=0;
@@ -408,11 +413,14 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<meta property="og:site_name" content="www.mypitself.com">'."\r\n";
    
    $line.='<style type="text/css">'."\r\n";
-   $line.=' body{font-family:arial;font-size:16px;box-sizing: border-box;margin: 0;padding: 0;}'."\r\n";
-   $line.=' td{text-align:center;}'."\r\n";
+   $line.=' body{font-family:arial;font-size:16px;box-sizing: border-box;margin: 0;padding: 0;font-color:#333;}'."\r\n";
+   $line.=' h1{text-align:center;}'."\r\n";
+   $line.=' table{border:1px #ddd solid;border-collapse: collapse;}'."\r\n";
+   $line.=' td{text-align:center;border:1px #ddd solid;}'."\r\n";
    $line.=' td.centered{text-align:center;}'."\r\n";
    $line.=' a.l1,a.l1:visited{color:#444;background:#fefefe;display:inline-block;padding:2px;border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;text-decoration:none;margin-top:3px;}'."\r\n";
    $line.=' img{border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;}'."\r\n";
+   $line.=' p{margin:15px auto;width:100%;text-align:justify;padding:3px;max-width:600px;line-height:1.5em;}'."\r\n";
    $line.='</style>'."\r\n";
 
    $line.='</head>' ."\r\n";
@@ -420,11 +428,13 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<h1>lighthouse score rank for pwa</h1>' ."\r\n";
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo<p>' ."\r\n";
-   $line.='<p>This list has been updated the '.date('Y-m-d').'<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
-   $line.='<p>Do not forget to play koolsol ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
-   $line.='<table border="1">' ."\r\n";
-   $line.='<tr><th>Rank<br />score</th><th>apps ('.$count.')</th><th colspan="5" style="max-width:50%;font-size:0.8em;">pwa,perf.,accessibility,<br />best-practices,seo</th></tr>' ."\r\n";
+   $line.='<table style="margin:5px auto;">' ."\r\n";
+   $line.='<tr>' ."\r\n";
+   $line.='<th>Rank<br />score</th>' ."\r\n";
+   $line.='<th>apps ('.$count.')</th>' ."\r\n";
+   $line.='<th colspan="5" style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
+   $line.='</tr>' ."\r\n";
    fwrite($fd,$line);
    $rank=0;
    $rankGlobal=0;
@@ -474,7 +484,7 @@ if(sizeof($lesManifestsEtUrls)>0){
      $couleurHex=dechex($couleur);
      $couleurHex=strlen($couleurHex)==1?'0'.$couleurHex:$couleurHex;
      if($rank==1){
-      $theColor='00d000';
+      $theColor='009400';
       $theBorderColor='border:2px red solid;';
      }else{
       $theColor=$couleurHex.'ff00';
@@ -483,20 +493,21 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
      
      $line='<tr>'.
-      '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.'">'.$rank.'/'.$count.'<br />'.$score. '</td>' .
-      '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'"><table  style="width:100%;"><tr>'.
-       '<td style="width:50px;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+      '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.$count.'<br />'.($score=='1.0000'?'100':substr($score*100,0)). '</td>' .
+      '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'.
+      '<table  style="width:100%;border:0;"><tr>'.
+       '<td style="width:50px;border:0;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        '<img src="'.$icon.'" height="48" width="48" /> '.
        '</a></td>'.
-       '<td style="text-align:center;width:200px;"><a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+       '<td style="text-align:center;width:200px;border:0;"><a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
        ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</td>'.
-       '<td style="width:50px;"></td></tr></table></td>' . 
-      '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.8em;'.$theBorderColor.'">'                 .
-      ''.$v1['pwa-score']                .
-      ','.$v1['performance-score']        .
-      ','.$v1['accessibility-score']      .
-      ','.$v1['best-practices-score']     .
-      ','.$v1['seo-score']                . 
+       '</tr></table></td>' . 
+      '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'                 .
+      '' .($v1['pwa-score']           =='1.00'?'1':subsr($v1['pwa-score'],1))                .
+      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
+      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
+      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
+      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               .
       '<br /><a style="display:block;width:80%;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>' .
       ''.'</td>' .
       "</tr>\r\n" ;
@@ -505,6 +516,10 @@ if(sizeof($lesManifestsEtUrls)>0){
    }
    $line= '</table>'."\r\n";  fwrite($fd,$line);
    
+   $line='<p>This list has been updated the '.date('Y-m-d').'<p>' ."\r\n";
+   fwrite($fd,$line);
+   $line='<p>Do not forget to play koolsol ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
+   fwrite($fd,$line);
    
    @include('lighthouse-write-google-tag.php'); // optional : writes the google analytics code at the end of the file ( see the source genetated at the end of this page : http://www.mypitself.com/lighthouse-score-rank-for-pwa.html)
    

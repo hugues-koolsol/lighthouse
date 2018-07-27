@@ -110,6 +110,7 @@ $urls=array(
  'https://dk.trustpilot.com/',
  'https://avia.yandex.ua/?utm_medium=link',
  'https://www.euroki.org/?utm_medium=pwa-icon',
+ 'https://webkul.com/?source=pwa',
  
 // 'https://shuttling.org/', // KO
 // 'https://material.money/', // KO
@@ -429,6 +430,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
+   $line.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
    $line.='<table style="margin:5px auto;">' ."\r\n";
    $line.='<tr>' ."\r\n";
    $line.='<th>Rank<br />score</th>' ."\r\n";
@@ -503,7 +505,7 @@ if(sizeof($lesManifestsEtUrls)>0){
        ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</td>'.
        '</tr></table></td>' . 
       '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'                 .
-      '' .($v1['pwa-score']           =='1.00'?'1':subsr($v1['pwa-score'],1))                .
+      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
       '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
       '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
       '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .

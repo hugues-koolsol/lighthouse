@@ -9,6 +9,24 @@
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  
+ 'https://freesolitaire.win/',
+ 'https://cdn.htmlgames.com/KlondikeSolitaire/index.html?bgcolor=%23d9edf7',
+ 'https://www.solitaire-web-app.com/',
+ 'https://worldofsolitaire.com/fr/',
+/* 
+ 'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
+ 'https://www.jeu-du-solitaire.com/',
+ 'https://rcijeux.fr/game/20minutes/solitaire#main',
+ 'https://games.cdn.famobi.com/html5games/k/klondike-solitaire/v070/?fg_domain=play.famobi.com&fg_aid=A-GAMESYS&fg_uid=67ca6f89-9287-40f7-8620-3b591cecf5d7&fg_pid=0068b0d3-cc63-45f0-b051-d9414037c6a6&fg_beat=480&original_ref=',
+ 'https://amsarkadium-a.akamaihd.net/assets/global/game/webgl-klondike-solitaire/7cd852a3-2cad-498e-86f5-d30241d5b7de/?show_game_end=false&locale=en-US',
+ 'https://www.google.com/logos/fnbx/solitaire/standalone.html',
+ 'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
+ 'https://solitaire.frvr.com/',
+ 'http://pasjans-online.pl/',
+ 'http://www.mathster.com/games/solitaire/',
+*/
+
+
  'https://www.labrador-retrievers.com.au/labrador-puppies-for-sale-in-nsw-australia/',
  'https://amp-playground.firebaseapp.com/', // KO
  'https://hnpwa-vanilla.firebaseapp.com/?page=1',
@@ -17,18 +35,15 @@ $urls=array(
  'https://chemist.li/',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://roneetkumar.github.io/webstore/index.html?homescreen=1',
- 'https://chi.miantiao.me/',
  'https://www.bestprice.gr/',
  'https://appsco.pe/',
  'https://tubealert.co.uk/',
  'https://calculator.iondrimbafilho.me/',
- 'https://abrah.am/',
  'https://blog.nfz.moe/?pwa=true',
  'https://schsrch.xyz/',
  'https://ecmasyntax.io/about',
  'https://iot.gdedeck.com/',
  'https://preact-pwa.appspot.com/',
- 'https://adaptivewebdesign.info/1st-edition/read/index.html',
  'https://aidoru.tk/',
  'https://www.sscheduler.com/v3/index.php?launcher=true',
  'https://www.ventureharbour.com/',
@@ -36,14 +51,11 @@ $urls=array(
  'https://vrixe.com/app/pwa.html',
  'https://www.koolsol.com/',
  'https://mcslite.netlify.com/index.html',
- 'https://www.vitormalencar.com/?utm_medium=web_app_manifest',
  'https://www.zpeed.in/', //
  'https://restbasis.com/about',
  'https://sii.im/playground/takt/index.html',
  'https://know-it-all.io/',
- 'https://gusachenko.github.io/',
  'https://savewater.rmartinplumbing.com/index.html',
- 'https://lao-helper.firebaseapp.com/',
  'https://www.project-a.com/en',
  'https://www.istitlaa.me/?standalone=true',
  'https://www.polymer-project.org/',
@@ -52,16 +64,13 @@ $urls=array(
  'https://salvacam.js.org/polenGranada/',
  'https://tomrobertshaw.net/index.html',
  'https://outweb.io/',
- 'https://paulhoughton.github.io/preact-pwa/#/',
  'https://paleoleap.com/',
  'https://pwa-rocks.nl/',
- 'https://www.alpertron.com.ar/ECM.HTM?launcher=true',
  'https://angular.io/',
  'https://shop.polymer-project.org/',
  'https://browsersync.io/',
  'https://grrd01.github.io/Dice/index.html',
  'https://vuepress.vuejs.org/',
- 'https://www.infiniteimaginations.co/index.html#/hello/',
  'https://airhorner.com/',
  'https://so-pwa.firebaseapp.com/',
  'https://headline.tooo.io/',
@@ -83,7 +92,6 @@ $urls=array(
  'https://closerinti.me/',
  'https://www.limeroad.com/?start_url=WEBAPP',
  'https://www.chromestatus.com/features',
- 'https://hnpwa-firebase.firebaseapp.com/',
  'https://marvelapi.iondrimbafilho.me/',
  'https://wow-character-lookup.firebaseapp.com/',
  'https://ng-pokedex.firebaseapp.com/pokemon',
@@ -96,7 +104,6 @@ $urls=array(
  'https://pwa.topicdeck.com/',
  'https://www.restorebin.com/',
  'https://igenapps.com/',
- 'https://milanojs.com/',
  'https://snake-pwa.github.io/',
  'https://www.womentechmakers.com/',
  'https://1tuner.com/',
@@ -104,34 +111,14 @@ $urls=array(
  'https://www.tailorpost.com/de-at/',
  'https://wetainment.com/',
  'https://grrd01.github.io/4inaRow/index.html',
- 'https://feuerwehr-eisolzried.de/',
  'https://m.weibo.cn/',
  'https://fr.mappy.com/',
- 'https://dk.trustpilot.com/',
  'https://avia.yandex.ua/?utm_medium=link',
  'https://www.euroki.org/?utm_medium=pwa-icon',
  'https://webkul.com/?source=pwa',
- 
-// 'https://shuttling.org/', // KO
-// 'https://material.money/', // KO
-// 'https://instasee.me/', // KO
-// 'https://ademola.adegbuyi.me/', // KO
-// 'https://pwa.compellia.com/', // KO
-// 'https://ibmc.site/', // KO
-// 'https://joelhanson.ml/index.html', // KO
-// 'https://saka7.github.io/esoteric-schedule', // KO
-// 'https://developers.google.com/web/tools/workbox/', // KO
-// 'https://helloworldpwa.applbr.com/', // KO
-// 'https://state-of-the-web.com/', // KO
-// 'https://www.progressivewebflap.com/index.html', // KO
-
-
-// 'https://vue-hn.now.sh/top', // not 100 % pwa
-
-// canary 69.0.3488.0 bugs on these pages when an action is done
-
-// Error: connect EADDRINUSE 127.0.0.1:53134    at Object._errnoException (util.js:1022:11)       at _exceptionWithHostPort (util.js:1044:20)     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
-
+ 'https://pwa.fishki.net/pwa/?from_home',
+ 'https://howsecureismypassword.net/',
+ 'https://maaatch.games/',
 
 );
 /*

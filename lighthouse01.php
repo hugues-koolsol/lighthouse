@@ -17,7 +17,6 @@ $urls=array(  // the apps I like :-)
  'https://appsco.pe/',
  'https://www.koolsol.com/',
  'https://airhorner.com/',
- 'https://www.google.fr/logos/fnbx/solitaire/standalone.html',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://grrd01.github.io/Dice/index.html',
@@ -29,6 +28,7 @@ $urls=array(  // the apps I like :-)
  
 /* 
  // I like solitaire games but many of them are not pwas
+ 'https://www.google.fr/logos/fnbx/solitaire/standalone.html',
  'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
  'https://rcijeux.fr/game/20minutes/solitaire#main',

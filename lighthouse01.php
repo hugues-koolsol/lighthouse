@@ -8,12 +8,27 @@
 
 
 // for the ones commented, the manifest file has non been founded
-$urls=array(  
+$urls=array(  // the apps I like :-)
  'https://freesolitaire.win/',
  'https://cdn.htmlgames.com/KlondikeSolitaire/index.html?bgcolor=%23d9edf7',
  'https://www.solitaire-web-app.com/',
  'https://worldofsolitaire.com/fr/',
+ 'https://zen-of-programming.com/',
+ 'https://appsco.pe/',
+ 'https://www.koolsol.com/',
+ 'https://airhorner.com/',
+ 'https://www.google.fr/logos/fnbx/solitaire/standalone.html',
+ 'https://grrd01.github.io/4inaRow/index.html',
+ 'https://grrd01.github.io/Puzzle/index.html',
+ 'https://grrd01.github.io/Dice/index.html',
+ 'https://maaatch.games/',
+ 'https://pwa-directory.appspot.com/',
+ 'https://calculator.iondrimbafilho.me/',
+ 'https://outweb.io/',
+
+ 
 /* 
+ // I like solitaire games but many of them are not pwas
  'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
  'https://rcijeux.fr/game/20minutes/solitaire#main',
@@ -27,105 +42,11 @@ $urls=array(
 */
 
 
- 'https://www.labrador-retrievers.com.au/labrador-puppies-for-sale-in-nsw-australia/',
- 'https://amp-playground.firebaseapp.com/', // KO
- 'https://hnpwa-vanilla.firebaseapp.com/?page=1',
- 'https://www.cinelah.com/',
- 'https://next-hnpwa.now.sh/',
- 'https://chemist.li/',
- 'https://grrd01.github.io/Puzzle/index.html',
- 'https://roneetkumar.github.io/webstore/index.html?homescreen=1',
- 'https://www.bestprice.gr/',
- 'https://appsco.pe/',
- 'https://tubealert.co.uk/',
- 'https://calculator.iondrimbafilho.me/',
- 'https://blog.nfz.moe/?pwa=true',
- 'https://schsrch.xyz/',
- 'https://ecmasyntax.io/about',
- 'https://iot.gdedeck.com/',
- 'https://preact-pwa.appspot.com/',
- 'https://aidoru.tk/',
- 'https://www.sscheduler.com/v3/index.php?launcher=true',
- 'https://www.ventureharbour.com/',
- 'https://helloworldemojis.hwalab.com/',
- 'https://vrixe.com/app/pwa.html',
- 'https://www.koolsol.com/',
- 'https://mcslite.netlify.com/index.html',
- 'https://www.zpeed.in/', //
- 'https://restbasis.com/about',
- 'https://sii.im/playground/takt/index.html',
- 'https://know-it-all.io/',
- 'https://savewater.rmartinplumbing.com/index.html',
- 'https://www.project-a.com/en',
- 'https://www.istitlaa.me/?standalone=true',
- 'https://www.polymer-project.org/',
- 'https://pwa-directory.appspot.com/',
- 'https://dev.to/',
- 'https://salvacam.js.org/polenGranada/',
- 'https://tomrobertshaw.net/index.html',
- 'https://outweb.io/',
- 'https://paleoleap.com/',
- 'https://pwa-rocks.nl/',
- 'https://angular.io/',
- 'https://shop.polymer-project.org/',
- 'https://browsersync.io/',
- 'https://grrd01.github.io/Dice/index.html',
- 'https://vuepress.vuejs.org/',
- 'https://airhorner.com/',
- 'https://so-pwa.firebaseapp.com/',
- 'https://headline.tooo.io/',
- 'https://expancio.com/',
- 'https://getunitrack.com/',
- 'https://amp.scrabble123.net/',
- 'https://linuxhub.it/pwa/index.html',
- 'https://thenotquiz.com/',
- 'https://m.reliefweb.int/',
- 'https://michaelhsu.tw/index.html',
- 'https://pwa.ng/',
- 'https://ergenekonyigit.github.io/',
- 'https://huffduffer.com/',
- 'https://www.stevepdp.com/noise-machine/index.html',
- 'https://noushevr.github.io/',
- 'https://use-the-platform.com/periodic-weather/',
- 'https://www.leasingrechnen.at/',
- 'https://www.afdb.org/en/',
- 'https://closerinti.me/',
- 'https://www.limeroad.com/?start_url=WEBAPP',
- 'https://www.chromestatus.com/features',
- 'https://marvelapi.iondrimbafilho.me/',
- 'https://wow-character-lookup.firebaseapp.com/',
- 'https://ng-pokedex.firebaseapp.com/pokemon',
- 'https://wickeyappstore.com/',
- 'https://relaxing.world/',
- 'https://shapeshifter.design/',
- 'https://nhm.ac.uk/naturenauts/register',
- 'https://tomitm.github.io/appmanifest/',
- 'https://advent-calendar.glitch.me/',
- 'https://pwa.topicdeck.com/',
- 'https://www.restorebin.com/',
- 'https://igenapps.com/',
- 'https://snake-pwa.github.io/',
- 'https://www.womentechmakers.com/',
- 'https://1tuner.com/',
- 'https://www.decorpad.com/amp/?homescreen=1',
- 'https://www.tailorpost.com/de-at/',
- 'https://wetainment.com/',
- 'https://grrd01.github.io/4inaRow/index.html',
- 'https://m.weibo.cn/',
- 'https://fr.mappy.com/',
- 'https://avia.yandex.ua/?utm_medium=link',
- 'https://www.euroki.org/?utm_medium=pwa-icon',
- 'https://webkul.com/?source=pwa',
- 'https://pwa.fishki.net/pwa/?from_home',
- 'https://howsecureismypassword.net/',
- 'https://maaatch.games/',
-
 );
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
  'https://airhorner.com/',
- 'https://closerinti.me/',
  'https://www.koolsol.com/',
 );
 */
@@ -413,7 +334,7 @@ if(sizeof($lesManifestsEtUrls)>0){
 
    $line.='</head>' ."\r\n";
    $line.='<body>' ."\r\n";
-   $line.='<h1>lighthouse score rank for pwa</h1>' ."\r\n";
+   $line.='<h1>lighthouse score rank for some of pwas that I like !</h1>' ."\r\n";
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";

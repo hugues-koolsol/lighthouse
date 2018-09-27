@@ -24,30 +24,26 @@ $urls=array(  // the apps I like :-)
  'https://pwa-directory.appspot.com/',
  'https://calculator.iondrimbafilho.me/',
  'https://outweb.io/',
-
  
-/* 
  // I like solitaire games but many of them are not pwas
- 'https://www.google.fr/logos/fnbx/solitaire/standalone.html',
+ 'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
- 'https://rcijeux.fr/game/20minutes/solitaire#main',
- 'https://games.cdn.famobi.com/html5games/k/klondike-solitaire/v070/?fg_domain=play.famobi.com&fg_aid=A-GAMESYS&fg_uid=67ca6f89-9287-40f7-8620-3b591cecf5d7&fg_pid=0068b0d3-cc63-45f0-b051-d9414037c6a6&fg_beat=480&original_ref=',
  'https://amsarkadium-a.akamaihd.net/assets/global/game/webgl-klondike-solitaire/7cd852a3-2cad-498e-86f5-d30241d5b7de/?show_game_end=false&locale=en-US',
- 'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
  'https://solitaire.frvr.com/',
  'http://pasjans-online.pl/',
  'http://www.mathster.com/games/solitaire/',
-*/
-
+ 
 
 );
+
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
- 'https://airhorner.com/',
+// 'https://airhorner.com/',
  'https://www.koolsol.com/',
+// 'https://www.google.com/logos/fnbx/solitaire/standalone.html',
 );
 */
 
@@ -191,7 +187,11 @@ foreach( $urls as $k1 => $v1){
    // launch lighthouse : adjust the path to reach thr lighthouse.cmd
    // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
    // --max-wait-for-load 10000       : after 10 seconds, abort !!
-   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.'  --max-wait-for-load 10000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
+   
+   // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
+   // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --throttling.rttMs --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
+   
+   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --throttling.rttMs --max-wait-for-load 10000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
    
    passthru($cmd1); // run it !
 
@@ -214,6 +214,62 @@ foreach( $urls as $k1 => $v1){
   
  }else{
   echo __LINE__ . ' manifest reference not founded for url = ' . $v1 . "\r\n" ;
+  
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $data , true ) . '</pre>' ; exit(0);
+  $title='no title';
+  $pos1=stripos($data,'<title');
+  if($pos1!==false){
+   $pos2=-1;
+   $goon=true;
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos1.' ' . var_export( substr($data,$pos1,100) , true ) . '' ; exit(0);
+   for($i=$pos1;$i<strlen($data)&&$goon==true;$i++){
+    if(substr($data,$i,1)=='>'){
+     $pos2=$i;
+     $goon=false;
+    }
+   }
+   if($pos2>0){
+//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos2.' ' . var_export( substr($data,$pos2,100) , true ) . '' ; exit(0);
+    $pos3=0;
+    $goon=true;
+    for($i=$pos2;$i<strlen($data)&&$goon==true;$i++){
+     if(substr($data,$i,1)=='<'){
+      $pos3=$i;
+      $goon=false;
+     }
+    }
+    if($pos3>0){
+     $title=substr($data,$pos2+1,$pos3-$pos2-1);
+//     echo __FILE__ . ' ' . __LINE__ . ' $dta2 = "' . $dta2 . '"' ; exit(0);
+    }
+   }
+  }
+  
+  
+  $fichier1=rawurlencode($v1).'.lighthouse.json';   
+  // launch lighthouse : adjust the path to reach thr lighthouse.cmd
+  // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
+  // --max-wait-for-load 10000       : after 10 seconds, abort !!
+  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --throttling.rttMs --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
+  // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
+  // throttlingMethod='devtools'
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = ' . $cmd1  . '' ; exit(0);
+  
+  passthru($cmd1); // run it !
+
+  $lesManifestsEtUrls[]=array(
+//   'manifest'        => $manifest,
+//   'manifestContent' => $manifestContent ,
+   'url'             => $v1,
+   'fichier'         => $fichier1,
+   'fichhtml'        => $fichier0,
+   'curlinfo1'       => $curlinfo1,
+   'title'           => $title,
+//   'curlinfo2'       => $curlinfo2,
+  );
+  
+  
+  
  }
 }
 //===============================================================================================================================
@@ -236,6 +292,10 @@ if(sizeof($lesManifestsEtUrls)>0){
   $fichier1=$v1['fichier'];
   $datajson=json_decode(file_get_contents($fichier1),true);
   if($datajson!==NULL){
+   if(isset($v1['title'])){
+    $lesManifestsEtUrls[$k1]['pwa-score']=0;
+    $datajson['categories']['pwa']['score']=0;
+   }
    $lesManifestsEtUrls[$k1]['pwa-score']            =number_format($datajson['categories']['pwa']['score'],2,'.','');
    $lesManifestsEtUrls[$k1]['performance-score']    =number_format($datajson['categories']['performance']['score'],2,'.','');
    $lesManifestsEtUrls[$k1]['accessibility-score']  =number_format($datajson['categories']['accessibility']['score'],2,'.','');
@@ -253,6 +313,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    unset($lesManifestsEtUrls[$k1]);
   }
  }
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls , true ) . '</pre>' ; exit(0);
  
  if(sizeof($lesManifestsEtUrls)>0){
   usort($lesManifestsEtUrls,'cmp01');
@@ -297,12 +358,14 @@ if(sizeof($lesManifestsEtUrls)>0){
   // build the final html file
   if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
    $count=0;
+/*   
    foreach($lesManifestsEtUrls as $k1=> $v1){
     $jsonMan=json_decode($v1['manifestContent'],true);
     if(!is_null($jsonMan)){
-     $count++;
     }
    }
+*/   
+   $count++;
    $line='';
    
    $line.='<html lang="en">'."\r\n";
@@ -350,10 +413,10 @@ if(sizeof($lesManifestsEtUrls)>0){
    $rankGlobal=0;
    $scorePrec=0;
    foreach($lesManifestsEtUrls as $k1=> $v1){
-     
-    $jsonMan=json_decode($v1['manifestContent'],true);
+    $manifestContent=isset($v1['manifestContent'])?$v1['manifestContent']:'';
+    $jsonMan=json_decode($manifestContent,true);
+    $icon='';
     if(!is_null($jsonMan)){
-     $icon='';
      foreach($jsonMan['icons'] as $k2 => $v2){
       if($icon==''){
        $sizes=$v2['sizes'];
@@ -377,52 +440,64 @@ if(sizeof($lesManifestsEtUrls)>0){
        }
       }
      }
-     if($icon==''){
-      echo __LINE__ . ' icon not founded = <pre>' . var_export( $v1 , true ) . '</pre>' ; 
-     }
-     $score=substr($v1['global-score'],0,6);
-     $rankGlobal++;
-     if($scorePrec!=$score){
-      $rank=$rankGlobal; 
-     }
-     $scorePrec=$score;
-     if($count!=1){
-      $couleur=(255/($count-1))*$rank-(255/($count-1));
-     }else{
-      $couleur=0;      
-     }
-     $couleurHex=dechex($couleur);
-     $couleurHex=strlen($couleurHex)==1?'0'.$couleurHex:$couleurHex;
-     if($rank==1){
-      $theColor='009400';
-      $theBorderColor='border:2px red solid;';
-     }else{
-      $theColor=$couleurHex.'ff00';
-      $theBorderColor='border:2px #'.$couleurHex.'ff00'.' solid;';
-      $theBorderColor='';
-     }
-     
-     $line='<tr>'.
-      '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.$count.'<br />'.($score=='1.0000'?'100':substr($score*100,0)). '</td>' .
-      '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'.
-      '<table  style="width:100%;border:0;"><tr>'.
-       '<td style="width:50px;border:0;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
-       '<img src="'.$icon.'" height="48" width="48" /> '.
-       '</a></td>'.
-       '<td style="text-align:center;width:200px;border:0;"><a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
-       ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</td>'.
-       '</tr></table></td>' . 
-      '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'                 .
-      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
-      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
-      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
-      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
-      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               .
-      '<br /><a style="display:block;width:80%;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>' .
-      ''.'</td>' .
-      "</tr>\r\n" ;
-     fwrite($fd,$line);
     }
+    if($icon==''){
+//     echo __LINE__ . ' icon not founded = <pre>' . var_export( $v1 , true ) . '</pre>' ; 
+    }
+    $score=substr($v1['global-score'],0,6);
+    $rankGlobal++;
+    if($scorePrec!=$score){
+     $rank=$rankGlobal; 
+    }
+    $scorePrec=$score;
+    if($count!=1){
+     $couleur=(255/($count-1))*$rank-(255/($count-1));
+    }else{
+     $couleur=0;      
+    }
+    $couleurHex=dechex($couleur);
+    $couleurHex=strlen($couleurHex)==1?'0'.$couleurHex:$couleurHex;
+    if($rank==1){
+     $theColor='009400';
+     $theBorderColor='border:2px red solid;';
+    }else{
+     $theColor=$couleurHex.'ff00';
+     $theBorderColor='border:2px #'.$couleurHex.'ff00'.' solid;';
+     $theBorderColor='';
+    }
+    
+    $line='<tr>'.
+     '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.$count.'<br />'.($score=='1.0000'?'100':substr($score*100,0)). '</td>' .
+     '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'.
+     '<table  style="width:100%;border:0;"><tr>'.
+      '<td style="width:50px;border:0;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+      ''.($icon!=''?'<img src="'.$icon.'" height="48" width="48" />':'').''.
+      '</a></td>'.
+      '<td style="text-align:center;width:200px;border:0;">';
+    if(isset($v1['title'])){
+     $line.=''.
+       '<a class="l1" target="_blank" href="'.$v1['url'].'">'.
+       ''.$v1['title'].'</a>';
+     
+    }else{
+     $line.=''.
+       '<a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+       ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>';
+     
+    }
+    $line.=''.
+      '</td>'.
+      '</tr></table></td>' . 
+     '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'                 .
+     '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
+     '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
+     '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
+     '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
+     '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               .
+     '<br />'.(isset($v1['curlinfo2']['url'])?'<a style="display:block;width:80%;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>':'').'' .
+     ''.'</td>' .
+     "</tr>\r\n" ;
+    fwrite($fd,$line);
    }
    $line= '</table>'."\r\n";  fwrite($fd,$line);
    

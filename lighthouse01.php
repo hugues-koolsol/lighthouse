@@ -528,7 +528,13 @@ if(sizeof($lesManifestsEtUrls)>0){
    
    $line='<p>This list has been updated the '.date('Y-m-d').'<p>' ."\r\n";
    fwrite($fd,$line);
-   $line='<p>Do not forget to play koolsol ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
+   
+   $line ='<p><a href="https://www.nytimes.com/2013/02/24/opinion/sunday/solitaire-me-vs-me.html">Why should you play solitaire game by Francine Prose ?</a>'.CRLF;
+   $line.='<p><a href="https://www.newyorker.com/magazine/1972/01/22/solitaire-2">A solitaire story by John Updike</a>'.CRLF;
+   $line.='<p lang="fr"><a href="https://motherboard.vice.com/fr/article/53ygg3/le-jeu-de-solitaire-a-inspire-loutil-mathematique-le-plus-utilise-au-monde">Le jeu de solitaire a inspiré l\'outil mathématique le plus utilisé au monde</a>'.CRLF;
+   $line.='<p><a href="https://fas.org/sgp/othergov/doe/lanl/pubs/00326867.pdf">Solitaire game and monte carlo method</a>'.CRLF;
+   
+   $line.='<p>Do not forget to play koolsol ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
    fwrite($fd,$line);
    
    @include('lighthouse-write-google-tag.php'); // optional : writes the google analytics code at the end of the file ( see the source genetated at the end of this page : http://www.mypitself.com/lighthouse-score-rank-for-pwa.html)

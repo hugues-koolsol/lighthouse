@@ -15,7 +15,7 @@ $urls=array(  // the apps I like :-)
  'https://worldofsolitaire.com/fr/',
  'https://zen-of-programming.com/',
  'https://appsco.pe/',
- 'https://www.koolsol.com/',
+ 'https://www.koolsol.com/', // good game
  'https://airhorner.com/',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
@@ -31,17 +31,37 @@ $urls=array(  // the apps I like :-)
  'https://www.jeu-du-solitaire.com/',
  'https://amsarkadium-a.akamaihd.net/assets/global/game/webgl-klondike-solitaire/7cd852a3-2cad-498e-86f5-d30241d5b7de/?show_game_end=false&locale=en-US',
  'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
- 'https://solitaire.frvr.com/',
+ 'https://solitaire.frvr.com/', // good game
  'http://pasjans-online.pl/',
  'http://www.mathster.com/games/solitaire/',
+ 'https://www.20minutes.fr/services/solitaire',
+ 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
+ 'https://www.lci.fr/jeux/solitaire/',
+ 'https://www.solitr.com/',
+ 'https://www.planet.fr/jeu-solitaire',
+ 'http://www.classic-solitaire.com/',
+ 'http://jeux.lemonde.fr/games/klondike-solitaire/',
+ 'https://games.washingtonpost.com/games/klondike-solitaire/',
+ 'http://games.latimes.com/games/klondike-solitaire/',
+ 'https://justsolitaire.com/Klondike_Solitaire/',
+ 'https://www.solitaire-klondike.com/klondike.html',
+ 'https://www.solitr.com/klondike-turn-one',
+ 'http://jeux.meteocity.com/games/klondike-solitaire/',
+ 'https://games.aarp.org/games/klondike-solitaire-new',
+ 'https://www.klondikesolitaire.net/',
+ 'https://www.solitaire-play.com/',
+ 'https://www.solitairejeux.com/jeu/Pirate+Klondike',
+ 'http://solitaires-online.com/',
+ 'http://www.10001games.fr/jeu/klondike-solitaire',
+ 'https://poki.com/en/g/poki-klondike-solitaire',
  
-
 );
 
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
 // 'https://airhorner.com/',
+ 'https://freesolitaire.win/',
  'https://www.koolsol.com/',
 // 'https://www.google.com/logos/fnbx/solitaire/standalone.html',
 );
@@ -276,10 +296,10 @@ foreach( $urls as $k1 => $v1){
 //===============================================================================================================================
 function cmp01($a, $b){
  if($a['global-score'] == $b['global-score']) {
-  if($a['url'] == $b['url']) {
+  if($a['curlinfo1']['total_time'] == $b['curlinfo1']['total_time']) {
    return 0;
   }
-  return ($a['url'] < $b['url']) ? -1 : 1;
+  return ($a['curlinfo1']['total_time'] < $b['curlinfo1']['total_time']) ? -1 : 1;
  }
  return ($a['global-score'] > $b['global-score']) ? -1 : 1;
 } 
@@ -306,6 +326,8 @@ if(sizeof($lesManifestsEtUrls)>0){
                                                                     $datajson['categories']['accessibility']['score']*3+          // weight =  3
                                                                     $datajson['categories']['best-practices']['score']*2+         // weight =  2
                                                                     $datajson['categories']['seo']['score']*1)/20 , 5 ,'.','');   // weight =  1
+   $lesManifestsEtUrls[$k1]['curl-total_time']      =$v1['curlinfo1']['total_time'];
+                                                                       
   }                            
  }
  foreach( $lesManifestsEtUrls as $k1 => $v1 ){
@@ -318,7 +340,7 @@ if(sizeof($lesManifestsEtUrls)>0){
  if(sizeof($lesManifestsEtUrls)>0){
   usort($lesManifestsEtUrls,'cmp01');
   if($fd=fopen('out1.csv','w')){
-   $line= 'url;pwa;performance;accessibility;best-practices;seo;score (10*pwa+4*perf+3*accs+2*bstPr+1*seo)' ."\r\n";
+   $line= 'url;pwa;performance;accessibility;best-practices;seo;score (10*pwa+5*perf+4*accs+3*bstPr+2*seo+1*curl total_time)' ."\r\n";
    fwrite($fd,$line);
    foreach( $lesManifestsEtUrls as $k1 => $v1 ){
     $line='"'.$v1['url'].'";' . 
@@ -328,6 +350,7 @@ if(sizeof($lesManifestsEtUrls)>0){
      '"'.str_replace('.',',',$v1['best-practices-score'])     . '";' .
      '"'.str_replace('.',',',$v1['seo-score'])                . '";' .
      '"'.str_replace('.',',',$v1['global-score'])             . '";' .
+     '"'.str_replace('.',',',$v1['curl-total_time'])          . '";' .
      "\r\n" ;
     fwrite($fd,$line);
    }
@@ -399,14 +422,15 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<body>' ."\r\n";
    $line.='<h1>lighthouse score rank for some of pwas that I like !</h1>' ."\r\n";
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
-   $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo<p>' ."\r\n";
+   $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, the curl time in seconds makes the difference<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
    $line.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
    $line.='<table style="margin:5px auto;">' ."\r\n";
    $line.='<tr>' ."\r\n";
    $line.='<th>Rank<br />score</th>' ."\r\n";
-   $line.='<th>apps ('.$count.')</th>' ."\r\n";
+   $line.='<th>apps ('.sizeof($lesManifestsEtUrls).')</th>' ."\r\n";
    $line.='<th colspan="5" style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
+   $line.='<th style="font-size:0.8em;">curl time <br />seconds</th>' ."\r\n";
    $line.='</tr>' ."\r\n";
    fwrite($fd,$line);
    $rank=0;
@@ -467,7 +491,7 @@ if(sizeof($lesManifestsEtUrls)>0){
     }
     
     $line='<tr>'.
-     '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.$count.'<br />'.($score=='1.0000'?'100':substr($score*100,0)). '</td>' .
+     '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'<br />'.($score=='1.0000'?'100':substr($score*100,0)). '</td>' .
      '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'.
      '<table  style="width:100%;border:0;"><tr>'.
       '<td style="width:50px;border:0;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
@@ -495,8 +519,9 @@ if(sizeof($lesManifestsEtUrls)>0){
      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               .
      '<br />'.(isset($v1['curlinfo2']['url'])?'<a style="display:block;width:80%;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>':'').'' .
-     ''.'</td>' .
-     "</tr>\r\n" ;
+     ''.'</td>' ;
+    $line.='<td style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
+    $line.=''."</tr>\r\n" ;
     fwrite($fd,$line);
    }
    $line= '</table>'."\r\n";  fwrite($fd,$line);

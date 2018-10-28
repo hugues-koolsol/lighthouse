@@ -26,35 +26,43 @@ $urls=array(  // the apps I like :-)
  'https://outweb.io/',
  
  // I like solitaire games but many of them are not pwas
+ // and I think games should have an offline mode.
  'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
  'https://amsarkadium-a.akamaihd.net/assets/global/game/webgl-klondike-solitaire/7cd852a3-2cad-498e-86f5-d30241d5b7de/?show_game_end=false&locale=en-US',
  'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
  'https://solitaire.frvr.com/', // good game
- 'http://pasjans-online.pl/',
- 'http://www.mathster.com/games/solitaire/',
  'https://www.20minutes.fr/services/solitaire',
  'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
  'https://www.lci.fr/jeux/solitaire/',
  'https://www.solitr.com/',
  'https://www.planet.fr/jeu-solitaire',
- 'http://www.classic-solitaire.com/',
- 'http://jeux.lemonde.fr/games/klondike-solitaire/',
  'https://games.washingtonpost.com/games/klondike-solitaire/',
  'http://games.latimes.com/games/klondike-solitaire/',
  'https://justsolitaire.com/Klondike_Solitaire/',
  'https://www.solitaire-klondike.com/klondike.html',
  'https://www.solitr.com/klondike-turn-one',
- 'http://jeux.meteocity.com/games/klondike-solitaire/',
  'https://games.aarp.org/games/klondike-solitaire-new',
  'https://www.klondikesolitaire.net/',
  'https://www.solitaire-play.com/',
  'https://www.solitairejeux.com/jeu/Pirate+Klondike',
+ 'https://poki.com/en/g/poki-klondike-solitaire',
+ 'https://www.gralon.net/jeux-en-ligne/jeu-solitaire.htm',
+ 'https://www.vivenoel.com/calendrier/2dec.htm',
+ 'https://cardgames.io/solitaire/',
+ 'http://pasjans-online.pl/',
+ 'http://www.mathster.com/games/solitaire/',
+ 'http://www.classic-solitaire.com/',
+ 'http://jeux.lemonde.fr/games/klondike-solitaire/',
+ 'http://jeux.meteocity.com/games/klondike-solitaire/',
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
- 'https://poki.com/en/g/poki-klondike-solitaire',
- 
+ 'http://www.jeusolitaire.fr/jouerausolitaire/solitaire.php',
+ 'http://www.jeux.fr/jeu/solitaire-classique',
+ 'http://solitaire-jeu.eu/',
+ 'http://www.jeusolitairegratuit.fr/jeux-de-cartes-gratuits-en-ligne.php?jeu-de-cartes-en-ligne=20',
+ 'http://www.4j.com/Solitaire-Master',
 );
 
 /*
@@ -376,21 +384,24 @@ if(sizeof($lesManifestsEtUrls)>0){
    fclose($fdlesManifestsEtUrls); 
   }
   
+  // ====================================================
+  // =========== build the final html file ==============
+  // ====================================================
   
-
-  // build the final html file
-  if($fd=fopen('lighthouse-score-rank-for-pwa.html','w')){
-   $count=0;
-/*   
-   foreach($lesManifestsEtUrls as $k1=> $v1){
-    $jsonMan=json_decode($v1['manifestContent'],true);
-    if(!is_null($jsonMan)){
-    }
+  $dir=''.date('Y/m/d',time());
+  if(!is_dir($dir)){
+   if(!mkdir($dir,0777,true)){
+    die(__LINE__ . ' impossible de créer le répertoire');
    }
-*/   
+  }
+  
+  
+  if($fd=fopen($dir.'/'.'lighthouse-score-rank-for-pwa.html','w')){
+   $count=0;
    $count++;
    $line='';
    
+   $line.='<!DOCTYPE html>'."\r\n";
    $line.='<html lang="en">'."\r\n";
    $line.='<head>'."\r\n";
    $line.='<meta charset="utf-8">'."\r\n";
@@ -415,7 +426,25 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.=' td.centered{text-align:center;}'."\r\n";
    $line.=' a.l1,a.l1:visited{color:#444;background:#fefefe;display:inline-block;padding:2px;border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;text-decoration:none;margin-top:3px;}'."\r\n";
    $line.=' img{border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;}'."\r\n";
-   $line.=' p{margin:15px auto;width:100%;text-align:justify;padding:3px;max-width:600px;line-height:1.5em;}'."\r\n";
+   $line.=' p{margin:15px auto;text-align:justify;padding:3px;max-width:600px;line-height:1.5em;}'."\r\n";
+   $line.=' .tableResult1{max-width:540px;margin:5px auto;}'."\r\n";
+   $line.='@media screen and (max-width: 500px){/* todo adjust size */'."\r\n";
+   $line.=' table.tableResult1{border: 0;margin:5px 5px 5px 5px;}'."\r\n";
+   $line.=' table.tableResult1 thead{border:none;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}'."\r\n";
+   $line.=' table.tableResult1 tr{border-bottom:3px solid #eee;display:block;margin-bottom:2.001em;}'."\r\n";
+   $line.=' table.tableResult1 td{border-bottom:1px solid #eee;display:block;text-align:right!important;min-height:30px;}'."\r\n";
+   $line.=' table.tableResult1 td:before{content:attr(data-label);font-weight:bold;margin:5px 5px;padding-left: 15px;float:left;}'."\r\n";
+   $line.=' table.tableResult1 td:last-child{border-bottom:3px red solid;}'."\r\n";
+   $line.=' table.tableResult1 td:first-child{border-top:3px red solid;padding:5px;}'."\r\n";
+   $line.=' table.tableResult1 td.actionColumn div{display:contents;}'."\r\n";
+   $line.=' table.tableResult1 td.actionColumn{height:auto;}'."\r\n";
+   $line.=' .tableResult1 td {height:auto;}'."\r\n";
+   $line.=' .hs1{visibility:hidden;}'."\r\n";
+   $line.=' .hs1:before{content:"hello";}'."\r\n";
+   $line.=' .hid1 th{display:none;}'."\r\n";
+   $line.=' table.insidet1 td:before{font-weight:bold;margin:5px 5px;padding-left: 15px;float:left;}'."\r\n";
+   $line.=' .br2{line-height:2em;}'."\r\n";
+   $line.='}'."\r\n";
    $line.='</style>'."\r\n";
 
    $line.='</head>' ."\r\n";
@@ -424,12 +453,13 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, the curl time in seconds makes the difference<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
+   $line.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";
    $line.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
-   $line.='<table style="margin:5px auto;">' ."\r\n";
-   $line.='<tr>' ."\r\n";
-   $line.='<th>Rank<br />score</th>' ."\r\n";
+   $line.='<table class="tableResult1">' ."\r\n";
+   $line.='<tr class="hid1">' ."\r\n";
    $line.='<th>apps ('.sizeof($lesManifestsEtUrls).')</th>' ."\r\n";
-   $line.='<th colspan="5" style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
+   $line.='<th>rank | score</th>' ."\r\n";
+   $line.='<th style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
    $line.='<th style="font-size:0.8em;">curl time <br />seconds</th>' ."\r\n";
    $line.='</tr>' ."\r\n";
    fwrite($fd,$line);
@@ -490,56 +520,63 @@ if(sizeof($lesManifestsEtUrls)>0){
      $theBorderColor='';
     }
     
-    $line='<tr>'.
-     '<td class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'<br />'.($score=='1.0000'?'100':substr($score*100,0)). '</td>' .
-     '<td class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'.
-     '<table  style="width:100%;border:0;"><tr>'.
-      '<td style="width:50px;border:0;"><a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
-      ''.($icon!=''?'<img src="'.$icon.'" height="48" width="48" />':'').''.
-      '</a></td>'.
-      '<td style="text-align:center;width:200px;border:0;">';
+    $line="\r\n\r\n\r\n".' <tr>'."\r\n" .
+     '  <td data-label="" class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'. "\r\n" .
+     '   <div style="display:flex;">'. "\r\n" .
+     '    <div style="display:block;width:50px;border:0;">'."\r\n" .
+     '     <a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+     '     '.($icon!=''?'<img src="'.$icon.'" height="48" width="48" />':'') .
+     '     </a>'. "\r\n" .
+     '    </div>'. "\r\n" .
+     '   <div style="text-align:center;border:0;">&nbsp;'."\r\n" ;
     if(isset($v1['title'])){
      $line.=''.
-       '<a class="l1" target="_blank" href="'.$v1['url'].'">'.
-       ''.$v1['title'].'</a>';
+       '    <a class="l1" target="_blank" href="'.$v1['url'].'">'.$v1['title'].'</a>'."\r\n";
      
     }else{
      $line.=''.
-       '<a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
-       ''.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>';
-     
+       '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>'."\r\n";
     }
     $line.=''.
-      '</td>'.
-      '</tr></table></td>' . 
-     '<td colspan="5" style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'                 .
+     '    </div>'."\r\n".
+     '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
+     '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
+     '  <td data-label="scores : pwa , perf , accessi , bst-pract. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'">'                 .
      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               .
-     '<br />'.(isset($v1['curlinfo2']['url'])?'<a style="display:block;width:80%;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>':'').'' .
-     ''.'</td>' ;
-    $line.='<td style="background-color:#'.$theColor.';max-width:50%;font-size:0.9em;'.$theBorderColor.'">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
+     '<br class="br2" />'.(isset($v1['curlinfo2']['url'])?'<a style="display:inline-block;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>':'').'' .
+     ''.'</td>' ."\r\n";
+    $line.='  <td data-label="curl total time" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
     $line.=''."</tr>\r\n" ;
     fwrite($fd,$line);
    }
    $line= '</table>'."\r\n";  fwrite($fd,$line);
    
-   $line='<p>This list has been updated the '.date('Y-m-d').'<p>' ."\r\n";
-   fwrite($fd,$line);
    
-   $line ='<p><a href="https://www.nytimes.com/2013/02/24/opinion/sunday/solitaire-me-vs-me.html">Why should you play solitaire game by Francine Prose ?</a>'.CRLF;
-   $line.='<p><a href="https://www.newyorker.com/magazine/1972/01/22/solitaire-2">A solitaire story by John Updike</a>'.CRLF;
-   $line.='<p lang="fr"><a href="https://motherboard.vice.com/fr/article/53ygg3/le-jeu-de-solitaire-a-inspire-loutil-mathematique-le-plus-utilise-au-monde">Le jeu de solitaire a inspiré l\'outil mathématique le plus utilisé au monde</a>'.CRLF;
-   $line.='<p><a href="https://fas.org/sgp/othergov/doe/lanl/pubs/00326867.pdf">Solitaire game and monte carlo method</a>'.CRLF;
+   $line.='<p>'."\r\n";
+   $line.='I did koolsol because I wanted a fast and simple solitaire card game with solutions for the players around the world with translations in 27 languages. I am disapointed by the rank Google gives to it because I applied all the requirements ( pwa, offline and online, fast ...) and it is far from being on the first page when one search for solitaire game. Why ?'."\r\n";
+   $line.='</p>'."\r\n";
+   $line.='<p><a target="_blank" href="https://www.nytimes.com/2013/02/24/opinion/sunday/solitaire-me-vs-me.html">Why should you play solitaire game by Francine Prose ?</a></p>'."\r\n";
+   $line.='<p><a target="_blank" href="https://www.newyorker.com/magazine/1972/01/22/solitaire-2">A solitaire story by John Updike</a></p>'."\r\n";
+   $line.='<p lang="fr"><a href="https://motherboard.vice.com/fr/article/53ygg3/le-jeu-de-solitaire-a-inspire-loutil-mathematique-le-plus-utilise-au-monde">Le jeu de solitaire a inspiré un des outils mathématique le plus utilisé au monde</a></p>'."\r\n";
+   $line.='<p>'."\r\n";
+   $line.='It is quite funny that Google doesn\'t like flash games but when you search some solitaire games in the search engine, many of them are flash game !'."\r\n";
+   $line.='<br />Why ? :-).'."\r\n";
+   $line.='</p>'."\r\n";
+/*   
+   $line.='<p>'."\r\n";
+   $line.='An other point is that Google tells you what you should do for your web site to have good results with the criterias they define ( see lighthouse audit panel in the tools ) but when you try to match these criterias, Google doesn\'t care about them and doesn\'t like diversity. '."\r\n";
+   $line.='<br />For example, many solitaire games are in good positions in search results because they belong to famous newspapers but they are exactly the same gameboss solitaire in an inner frame ( it is a good game by the way even if it is not a pwa)'."\r\n";
+   $line.='</p>'."\r\n";
+*/
    
-   $line.='<p>Do not forget to play koolsol ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
+   $line.='<p>Do not forget to play koolsol and, please, share it ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
    fwrite($fd,$line);
    
    @include('lighthouse-write-google-tag.php'); // optional : writes the google analytics code at the end of the file ( see the source genetated at the end of this page : http://www.mypitself.com/lighthouse-score-rank-for-pwa.html)
-   
-   
    
    $line= '</body>' ."\r\n";  fwrite($fd,$line);
    $line= '</html>' ."\r\n";  fwrite($fd,$line);

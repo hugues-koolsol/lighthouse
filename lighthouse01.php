@@ -26,7 +26,7 @@ $urls=array(  // the apps I like :-)
  'https://www.solitaire-web-app.com/',
  'https://worldofsolitaire.com/fr/',
  'https://freesolitaire.win/',
-// 'https://cdn.htmlgames.com/KlondikeSolitaire/index.html?bgcolor=%23d9edf7',
+ 'https://cdn.htmlgames.com/KlondikeSolitaire/index.html?bgcolor=%23d9edf7', // KO
  'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
@@ -68,16 +68,155 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
-// 'https://airhorner.com/',
-// 'https://freesolitaire.win/',
-// 'https://www.koolsol.com/',
-// 'https://www.google.com/logos/fnbx/solitaire/standalone.html',
- 'https://cardgames.io/solitaire/',
- 'https://www.solitaire-play.com/',
- 'http://www.10001games.fr/jeu/klondike-solitaire',
-
-);
+ 'https://airhorner.com/',
 */
+);
+
+//===============================================================================
+function find1( $what , $contentOf , $body){ // find the manifest file name
+ $ret='';
+ $pos1=stripos($body,$what);
+ if($pos1!==false){
+  $pos2=-1;
+  $goon=true;
+  
+  for($i=$pos1;$i>=0&&$goon==true;$i--){
+   if(substr($body,$i,1)=='<'){
+    $pos2=$i;
+    $goon=false;
+   }
+  }
+  if($pos2>0){
+   $pos3=0;
+   $goon=true;
+   for($i=$pos2;$i<strlen($body)&&$goon==true;$i++){
+    if(substr($body,$i,1)=='>'){
+     $pos3=$i;
+     $goon=false;
+    }
+   }
+   if($pos3>0){
+    $dta2=substr($body,$pos2,$pos3-$pos2+1);
+    $pos4=stripos($dta2,$contentOf);
+    if($pos4!==false){
+     $dta2=substr($dta2,$pos4+6);
+     $pos5=stripos($dta2,'"');
+     if($pos5!==false){
+      $ret=substr($dta2,0,$pos5);
+     }
+    }
+   }
+  }
+ }
+ return $ret;
+ 
+}
+//===============================================================================
+function find2( $what , $contentOf , $body){ // find the manifest file name without "
+ $ret='';
+ $pos1=stripos($body,$what);
+ if($pos1!==false){
+  $pos2=-1;
+  $goon=true;
+  for($i=$pos1;$i>=0&&$goon==true;$i--){
+   if(substr($body,$i,1)=='<'){
+    $pos2=$i;
+    $goon=false;
+   }
+  }
+  if($pos2>0){
+   $pos3=0;
+   $goon=true;
+   for($i=$pos2;$i<strlen($body)&&$goon==true;$i++){
+    if(substr($body,$i,1)=='>'){
+     $pos3=$i;
+     $goon=false;
+    }
+   }
+   if($pos3>0){
+    $dta2=substr($body,$pos2,$pos3-$pos2+1);
+    $dta2=str_replace('"','',$dta2); // remove all '"' 
+    $pos4=stripos($dta2,$contentOf);
+    if($pos4!==false){
+     $dta2=substr($dta2,$pos4+5);
+     $pos5=stripos($dta2,' ');
+     if($pos5!==false){
+      $ret=substr($dta2,0,$pos5);
+     }else{
+      $pos5=stripos($dta2,'>');
+      if($pos5!==false){
+       $ret=substr($dta2,0,$pos5);
+      }
+     }
+    }
+   }
+  }
+ }
+ return $ret;
+  
+}
+//===============================================================================
+function find3($what,$body){
+ $ret='';
+ $pos1=stripos($body,$what);
+ if($pos1!==false){
+  $pos2=-1;
+  $goon=true;
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos1.' ' . var_export( substr($body,$pos1,100) , true ) . '' ; exit(0);
+  for($i=$pos1;$i<strlen($body)&&$goon==true;$i++){
+   if(substr($body,$i,1)=='>'){
+    $pos2=$i;
+    $goon=false;
+   }
+  }
+  if($pos2>0){
+//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos2.' ' . var_export( substr($body,$pos2,100) , true ) . '' ; exit(0);
+   $pos3=0;
+   $goon=true;
+   for($i=$pos2;$i<strlen($body)&&$goon==true;$i++){
+    if(substr($body,$i,1)=='<'){
+     $pos3=$i;
+     $goon=false;
+    }
+   }
+   if($pos3>0){
+    $ret=substr($body,$pos2+1,$pos3-$pos2-1);
+//     echo __FILE__ . ' ' . __LINE__ . ' $dta2 = "' . $dta2 . '"' ; exit(0);
+   }
+  }
+ }
+ 
+ return $ret;
+}
+//===============================================================================
+function absoluteUrl1($ref,$baseUrl){
+ $ret='';
+ if(strpos($ref,'https://')!==false){
+  $ret=$ref;
+ }else{
+  
+  if(substr($ref,0,2)=='//'){
+   $ref=substr($ref,1);
+   $pos1=strrpos($ref,'/');
+   $ref=substr($ref,$pos1);
+//   echo __FILE__ . ' ' . __LINE__ . ' $ref = <pre>' . var_export( $ref , true ) . '</pre>' ; exit(0);
+   
+  }
+  if(substr($ref,0,1)=='/'){
+   $pos1=strpos($baseUrl,'/',8);
+   if($pos1!==false){
+    $ret=substr($baseUrl,0,$pos1).$ref;
+   }
+  }else{
+   $pos1=strrpos($baseUrl,'/');
+   if($pos1!==false){
+    $ret=substr($baseUrl,0,$pos1).'/'.$ref;
+   }
+  }
+ }
+ return $ret;
+}
+//===============================================================================
 
 $lesManifestsEtUrls=array();
 $countUrl=0;
@@ -102,110 +241,29 @@ foreach( $urls as $k1 => $v1){
 // echo __FILE__ . ' ' . __LINE__ . ' $data = <pre>' . var_export( substr($data,0,1000) , true ) . '</pre>' ; exit(0);
  
  $curlinfo1=curl_getinfo($ch);
- // find the manifest file name
- $pos1=stripos($data,'rel="manifest"');
- if($pos1!==false){
-  $pos2=-1;
-  $goon=true;
-  
-  for($i=$pos1;$i>=0&&$goon==true;$i--){
-   if(substr($data,$i,1)=='<'){
-    $pos2=$i;
-    $goon=false;
-   }
-  }
-  if($pos2>0){
-   $pos3=0;
-   $goon=true;
-   for($i=$pos2;$i<strlen($data)&&$goon==true;$i++){
-    if(substr($data,$i,1)=='>'){
-     $pos3=$i;
-     $goon=false;
-    }
-   }
-   if($pos3>0){
-    $dta2=substr($data,$pos2,$pos3-$pos2+1);
-    $pos4=stripos($dta2,'href="');
-    if($pos4!==false){
-     $dta2=substr($dta2,$pos4+6);
-     $pos5=stripos($dta2,'"');
-     if($pos5!==false){
-      $manifest=substr($dta2,0,$pos5);
-     }
-    }
+ $manifest=find1('rel="manifest"' , 'href="' , $data);
+ 
+ $htmlicon='';
+ $htmlicon=find1('rel="shortcut icon"' , 'href="' , $data); //<link rel="shortcut icon" href="/favicon.ico">
+ if($htmlicon!=''){
+  $htmlicon=absoluteUrl1($htmlicon,$v1);
+ }else{
+  $htmlicon=find1('rel="icon"' , 'href="' , $data); //<link rel="shortcut icon" href="/favicon.ico">
+  if($htmlicon!=''){
+   $htmlicon=absoluteUrl1($htmlicon,$v1);
+  }else{
+   $htmlicon=find1('rel="apple-touch-icon"' , 'href="' , $data); //<link rel="shortcut icon" href="/favicon.ico">
+   if($htmlicon!=''){
+    $htmlicon=absoluteUrl1($htmlicon,$v1);
    }
   }
  }
  
- $titleHtml='';
- $pos1=stripos($data,'<title');
- if($pos1!==false){
-  $pos2=-1;
-  $goon=true;
-//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos1.' ' . var_export( substr($data,$pos1,100) , true ) . '' ; exit(0);
-  for($i=$pos1;$i<strlen($data)&&$goon==true;$i++){
-   if(substr($data,$i,1)=='>'){
-    $pos2=$i;
-    $goon=false;
-   }
-  }
-  if($pos2>0){
-//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos2.' ' . var_export( substr($data,$pos2,100) , true ) . '' ; exit(0);
-   $pos3=0;
-   $goon=true;
-   for($i=$pos2;$i<strlen($data)&&$goon==true;$i++){
-    if(substr($data,$i,1)=='<'){
-     $pos3=$i;
-     $goon=false;
-    }
-   }
-   if($pos3>0){
-    $titleHtml=substr($data,$pos2+1,$pos3-$pos2-1);
-//     echo __FILE__ . ' ' . __LINE__ . ' $dta2 = "' . $dta2 . '"' ; exit(0);
-   }
-  }
- }
+ $titleHtml=find3('<title',$data);
 // echo __FILE__ . ' ' . titleHtml . ' __LINE__ = <pre>' . var_export( $titleHtml , true ) . '</pre>' ; exit(0);
  
  if($manifest==''){ // for pwa-directory there is a rel=manifest without double quote around the value of the property rel !!!
-  $pos1=stripos($data,'rel=manifest');
-  if($pos1!==false){
-   $pos2=-1;
-   $goon=true;
-   for($i=$pos1;$i>=0&&$goon==true;$i--){
-    if(substr($data,$i,1)=='<'){
-     $pos2=$i;
-     $goon=false;
-    }
-   }
-   if($pos2>0){
-    $pos3=0;
-    $goon=true;
-    for($i=$pos2;$i<strlen($data)&&$goon==true;$i++){
-     if(substr($data,$i,1)=='>'){
-      $pos3=$i;
-      $goon=false;
-     }
-    }
-    if($pos3>0){
-     $dta2=substr($data,$pos2,$pos3-$pos2+1);
-     $dta2=str_replace('"','',$dta2); // remove all '"' 
-     $pos4=stripos($dta2,'href=');
-     if($pos4!==false){
-      $dta2=substr($dta2,$pos4+5);
-      $pos5=stripos($dta2,' ');
-      if($pos5!==false){
-       $manifest=substr($dta2,0,$pos5);
-      }else{
-       $pos5=stripos($dta2,'>');
-       if($pos5!==false){
-        $manifest=substr($dta2,0,$pos5);
-       }
-      }
-     }
-    }
-   }
-  }
+  $manifest=find2('rel=manifest' , 'href=' , $data);
  }
  curl_close($ch);
  
@@ -214,22 +272,9 @@ foreach( $urls as $k1 => $v1){
  
  
  if($manifest!=''){
-  $manifUrl='';
-  if(strpos($manifest,'https://')!==false){
-   $manifUrl=$manifest;
-  }else{
-   if(substr($manifest,0,1)=='/'){
-    $pos1=strpos($v1,'/',8);
-    if($pos1!==false){
-     $manifUrl=substr($v1,0,$pos1).$manifest;
-    }
-   }else{
-    $pos1=strrpos($v1,'/');
-    if($pos1!==false){
-     $manifUrl=substr($v1,0,$pos1).'/'.$manifest;
-    }
-   }
-  }
+//  echo __FILE__ . ' ' . __LINE__ . ' $manifest = <pre>' . var_export( $manifest , true ) . '</pre>' ; exit(0);
+  $manifUrl=absoluteUrl1($manifest,$v1);
+//  echo __FILE__ . ' ' . __LINE__ . ' $manifUrl = <pre>' . var_export( $manifUrl , true ) . '</pre>' ; exit(0);
   if($manifUrl!=''){
    $ch=curl_init();
 
@@ -275,6 +320,7 @@ foreach( $urls as $k1 => $v1){
     'fichhtml'        => $fichier0,
     'curlinfo1'       => $curlinfo1,
     'curlinfo2'       => $curlinfo2,
+    'htmlicon'        => $htmlicon,
    );
    sleep(1); // relax 1 second
    
@@ -288,35 +334,8 @@ foreach( $urls as $k1 => $v1){
 //  echo __LINE__ . ' manifest reference not founded for url = ' . $v1 . "\r\n" ;
   
 //  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( substr( $data , 0 , 1000 ) , true ) . '</pre>' ; exit(0);
-  $title='';
-  $pos1=stripos($data,'<title');
-  if($pos1!==false){
-   $pos2=-1;
-   $goon=true;
-//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos1.' ' . var_export( substr($data,$pos1,100) , true ) . '' ; exit(0);
-   for($i=$pos1;$i<strlen($data)&&$goon==true;$i++){
-    if(substr($data,$i,1)=='>'){
-     $pos2=$i;
-     $goon=false;
-    }
-   }
-   if($pos2>0){
-//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos2.' ' . var_export( substr($data,$pos2,100) , true ) . '' ; exit(0);
-    $pos3=0;
-    $goon=true;
-    for($i=$pos2;$i<strlen($data)&&$goon==true;$i++){
-     if(substr($data,$i,1)=='<'){
-      $pos3=$i;
-      $goon=false;
-     }
-    }
-    if($pos3>0){
-     $title=substr($data,$pos2+1,$pos3-$pos2-1);
-//     echo __FILE__ . ' ' . __LINE__ . ' $dta2 = "' . $dta2 . '"' ; exit(0);
-    }
-   }
-  }
-  
+  $title=$titleHtml;
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $title , true ) . '</pre>' ; exit(0);
   
   $fichier1=rawurlencode($v1).'.lighthouse.json';   
   // launch lighthouse : adjust the path to reach thr lighthouse.cmd
@@ -337,8 +356,9 @@ foreach( $urls as $k1 => $v1){
    'fichhtml'        => $fichier0,
    'curlinfo1'       => $curlinfo1,
    'title'           => $title,
-//   'curlinfo2'       => $curlinfo2,
+   'htmlicon'        => $htmlicon,
   );
+  sleep(1); // relax 1 second
   
   
   
@@ -570,24 +590,29 @@ if(sizeof($lesManifestsEtUrls)>0){
     $line="\r\n\r\n\r\n".' <tr>'."\r\n" .
      '  <td data-label="" class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'. "\r\n" .
      '   <div style="display:flex;">'. "\r\n" .
-     '    <div style="display:block;width:50px;border:0;">'."\r\n" ;
+     '    <div style="display:block;width:51px;border:0;">'."\r\n" ;
     if($icon!=''){
      $line.=''.
       '     <a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
       '     '.($icon!=''?'<img src="'.$icon.'" height="48" width="48" />':'') .
       '     </a>'. "\r\n" ;
+    }else{
+     if($v1['htmlicon']!=''){
+     $line.=''.
+      '     <a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+      '     '.'<img src="'.$v1['htmlicon'].'" height="48" width="48" />' .
+      '     </a>'. "\r\n" ;      
+     }
+     
     }
     $line.=''.
      '    </div>'. "\r\n" .
-     '   <div style="text-align:center;border:0;">&nbsp;'."\r\n" ;
-//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $v1 , true ) . '</pre>' ; exit(0);
+     '    <div style="text-align:center;border:0;margin-left:2px;">'."\r\n" ;
     if(isset($v1['title'])){
-//     echo __FILE__ . ' ' . __LINE__ . ' $v1[title] = <pre>' . var_export( $v1['title'] , true ) . '</pre> $v1[titleHtml] = <pre>' . var_export( $v1['titleHtml'] , true ) . '</pre>' ; exit(0);
      $line.=''.
        '    <a class="l1" target="_blank" href="'.$v1['url'].'">'.(trim($v1['title'])==''?htmlentities($v1['titleHtml']):htmlentities($v1['title'])).'</a>'."\r\n";
      
     }else{
-//     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( __LINE__ , true ) . '</pre>' ; exit(0);
      $line.=''.
        '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):$v1['titleHtml']).'">'.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>'."\r\n";
     }

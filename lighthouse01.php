@@ -36,7 +36,6 @@ $urls=array(  // the apps I like :-)
  'https://www.20minutes.fr/services/solitaire',
  'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
  'https://www.lci.fr/jeux/solitaire/',
- 'https://www.solitr.com/',
  'https://www.planet.fr/jeu-solitaire',
  'https://games.washingtonpost.com/games/klondike-solitaire/',
  'http://games.latimes.com/games/klondike-solitaire/',
@@ -68,9 +67,9 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
- 'https://airhorner.com/',
-*/
+ 'https://www.solitr.com/klondike-turn-one',
 );
+*/
 
 //===============================================================================
 function find1( $what , $contentOf , $body){ // find the manifest file name
@@ -162,7 +161,6 @@ function find3($what,$body){
  if($pos1!==false){
   $pos2=-1;
   $goon=true;
-//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos1.' ' . var_export( substr($body,$pos1,100) , true ) . '' ; exit(0);
   for($i=$pos1;$i<strlen($body)&&$goon==true;$i++){
    if(substr($body,$i,1)=='>'){
     $pos2=$i;
@@ -170,7 +168,6 @@ function find3($what,$body){
    }
   }
   if($pos2>0){
-//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '.$pos2.' ' . var_export( substr($body,$pos2,100) , true ) . '' ; exit(0);
    $pos3=0;
    $goon=true;
    for($i=$pos2;$i<strlen($body)&&$goon==true;$i++){
@@ -181,7 +178,6 @@ function find3($what,$body){
    }
    if($pos3>0){
     $ret=substr($body,$pos2+1,$pos3-$pos2-1);
-//     echo __FILE__ . ' ' . __LINE__ . ' $dta2 = "' . $dta2 . '"' ; exit(0);
    }
   }
  }
@@ -194,13 +190,10 @@ function absoluteUrl1($ref,$baseUrl){
  if(strpos($ref,'https://')!==false){
   $ret=$ref;
  }else{
-  
   if(substr($ref,0,2)=='//'){
    $ref=substr($ref,1);
    $pos1=strrpos($ref,'/');
    $ref=substr($ref,$pos1);
-//   echo __FILE__ . ' ' . __LINE__ . ' $ref = <pre>' . var_export( $ref , true ) . '</pre>' ; exit(0);
-   
   }
   if(substr($ref,0,1)=='/'){
    $pos1=strpos($baseUrl,'/',8);
@@ -225,7 +218,6 @@ foreach( $urls as $k1 => $v1){
  $countUrl++;
  echo __LINE__ . ' ' . $countUrl . '/' . $sizeOfurls . ' url='. $v1."\r\n";
  $ch = curl_init();
-
  curl_setopt($ch, CURLOPT_HEADER         , 0);
  curl_setopt($ch, CURLOPT_URL            , $v1 );
  curl_setopt($ch, CURLOPT_HEADER         , 0);
@@ -237,10 +229,9 @@ foreach( $urls as $k1 => $v1){
  curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
  $manifest='';
  $data=curl_exec($ch);
- 
-// echo __FILE__ . ' ' . __LINE__ . ' $data = <pre>' . var_export( substr($data,0,1000) , true ) . '</pre>' ; exit(0);
- 
  $curlinfo1=curl_getinfo($ch);
+ curl_close($ch);
+ 
  $manifest=find1('rel="manifest"' , 'href="' , $data);
  
  $htmlicon='';
@@ -259,22 +250,66 @@ foreach( $urls as $k1 => $v1){
   }
  }
  
+ if($htmlicon!=''){
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_HEADER         , 0);
+  curl_setopt($ch, CURLOPT_URL            , $htmlicon );
+  curl_setopt($ch, CURLOPT_HEADER         , 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1);
+  curl_setopt($ch, CURLOPT_TIMEOUT        , 5);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+  curl_setopt($ch, CURLOPT_USERAGENT      ,'Mozilla/5.0 (Linux; Android 6.0;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36');
+  curl_setopt($ch, CURLOPT_ENCODING       , ''); // avoid gzip format
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
+  $dataFav=curl_exec($ch);
+  $curlinfo0=curl_getinfo($ch);
+  curl_close($ch);
+  if(!isset($curlinfo0['http_code']) || $curlinfo0['http_code']!=200 || ( isset($curlinfo0['content_type']) && $curlinfo0['content_type'] == 'text/html' ) ){
+   $htmlicon='';
+  }
+ }
+
+ if($htmlicon==''){
+  $pos1=strpos($v1,'//');
+  $pos2=strpos($v1,'/',$pos1+2);
+  if($pos2!==null){
+   $urlFav=substr($v1,0,$pos2).'/favicon.ico';
+  }else{
+   $urlFav=$v1.'/favicon.ico';   
+  }
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_HEADER         , 0);
+  curl_setopt($ch, CURLOPT_URL            , $urlFav );
+  curl_setopt($ch, CURLOPT_HEADER         , 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1);
+  curl_setopt($ch, CURLOPT_TIMEOUT        , 5);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+  curl_setopt($ch, CURLOPT_USERAGENT      ,'Mozilla/5.0 (Linux; Android 6.0;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36');
+  curl_setopt($ch, CURLOPT_ENCODING       , ''); // avoid gzip format
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
+  $dataFav=curl_exec($ch);
+  $curlinfo0=curl_getinfo($ch);
+  curl_close($ch);
+  if(isset($curlinfo0['http_code']) && $curlinfo0['http_code']==200 && isset($curlinfo0['content_type']) && $curlinfo0['content_type']!='text/html'){
+   $htmlicon=$urlFav;
+  }
+ }
+ 
+ 
+ 
+ 
  $titleHtml=find3('<title',$data);
-// echo __FILE__ . ' ' . titleHtml . ' __LINE__ = <pre>' . var_export( $titleHtml , true ) . '</pre>' ; exit(0);
  
  if($manifest==''){ // for pwa-directory there is a rel=manifest without double quote around the value of the property rel !!!
   $manifest=find2('rel=manifest' , 'href=' , $data);
  }
- curl_close($ch);
  
  $fichier0=rawurlencode($v1).'.html';
  if($fdhtml=fopen($fichier0,'w')){ fwrite($fdhtml, $data ); fclose($fdhtml); }
  
  
  if($manifest!=''){
-//  echo __FILE__ . ' ' . __LINE__ . ' $manifest = <pre>' . var_export( $manifest , true ) . '</pre>' ; exit(0);
   $manifUrl=absoluteUrl1($manifest,$v1);
-//  echo __FILE__ . ' ' . __LINE__ . ' $manifUrl = <pre>' . var_export( $manifUrl , true ) . '</pre>' ; exit(0);
   if($manifUrl!=''){
    $ch=curl_init();
 
@@ -289,8 +324,6 @@ foreach( $urls as $k1 => $v1){
    curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
 
    $manifestContent=curl_exec($ch);
-   
-//   echo __FILE__ . ' ' . __LINE__ . ' $manifestContent = <pre>' . var_export( $manifestContent , true ) . '</pre>' ; exit(0);
    
    $curlinfo2=curl_getinfo($ch);
    curl_close($ch);
@@ -331,11 +364,8 @@ foreach( $urls as $k1 => $v1){
   }
   
  }else{
-//  echo __LINE__ . ' manifest reference not founded for url = ' . $v1 . "\r\n" ;
   
-//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( substr( $data , 0 , 1000 ) , true ) . '</pre>' ; exit(0);
   $title=$titleHtml;
-//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $title , true ) . '</pre>' ; exit(0);
   
   $fichier1=rawurlencode($v1).'.lighthouse.json';   
   // launch lighthouse : adjust the path to reach thr lighthouse.cmd
@@ -344,7 +374,6 @@ foreach( $urls as $k1 => $v1){
   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --throttling.rttMs --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
   // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
   // throttlingMethod='devtools'
-//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = ' . $cmd1  . '' ; exit(0);
   
   passthru($cmd1); // run it !
 
@@ -410,7 +439,6 @@ if(sizeof($lesManifestsEtUrls)>0){
    unset($lesManifestsEtUrls[$k1]);
   }
  }
-// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls , true ) . '</pre>' ; exit(0);
  
  if(sizeof($lesManifestsEtUrls)>0){
   usort($lesManifestsEtUrls,'cmp01');
@@ -440,7 +468,6 @@ if(sizeof($lesManifestsEtUrls)>0){
     if($trouve==false){
      $line=$v1.';0;0;0;0;0;0'."\r\n" ;
      fwrite($fd,$line);
- //    echo $line;
     }
    }
    fclose($fd);
@@ -563,7 +590,24 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
     }
     if($icon==''){
-//     echo __LINE__ . ' icon not founded = <pre>' . var_export( $v1 , true ) . '</pre>' ; 
+    }else{
+     $ch = curl_init();
+     curl_setopt($ch, CURLOPT_HEADER         , 0);
+     curl_setopt($ch, CURLOPT_URL            , $icon );
+     curl_setopt($ch, CURLOPT_HEADER         , 0);
+     curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1);
+     curl_setopt($ch, CURLOPT_TIMEOUT        , 5);
+     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+     curl_setopt($ch, CURLOPT_USERAGENT      ,'Mozilla/5.0 (Linux; Android 6.0;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36');
+     curl_setopt($ch, CURLOPT_ENCODING       , ''); // avoid gzip format
+     curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
+     $dataFav=curl_exec($ch);
+     $curlinfo0=curl_getinfo($ch);
+     curl_close($ch);
+     if(!isset($curlinfo0['http_code']) || $curlinfo0['http_code']!=200){
+      $icon='';
+     }
+     
     }
     $score=substr($v1['global-score'],0,6);
     $rankGlobal++;

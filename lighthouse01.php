@@ -19,10 +19,12 @@ $urls=array(  // the apps I like :-)
  'https://pwa-directory.appspot.com/',
  'https://calculator.iondrimbafilho.me/',
  'https://outweb.io/',
+ 'https://todo.koolsol.app/',
+ 'https://pwa-store.firebaseapp.com/',
  
  // I like solitaire games but many of them are not pwas
  // and I think games should have an offline mode.
- 'https://www.koolsol.com/', // good game
+ 'https://www.koolsol.com/', // good game ;-)
  'https://www.solitaire-web-app.com/',
  'https://worldofsolitaire.com/fr/',
  'https://freesolitaire.win/',
@@ -67,7 +69,7 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
- 'https://www.solitr.com/klondike-turn-one',
+ 'https://www.koolsol.com/', // good game ;-)
 );
 */
 
@@ -98,7 +100,7 @@ function find1( $what , $contentOf , $body){ // find the manifest file name
     $dta2=substr($body,$pos2,$pos3-$pos2+1);
     $pos4=stripos($dta2,$contentOf);
     if($pos4!==false){
-     $dta2=substr($dta2,$pos4+6);
+     $dta2=substr($dta2,$pos4+strlen($contentOf));
      $pos5=stripos($dta2,'"');
      if($pos5!==false){
       $ret=substr($dta2,0,$pos5);
@@ -217,6 +219,7 @@ $sizeOfurls=sizeof($urls);
 foreach( $urls as $k1 => $v1){
  $countUrl++;
  echo __LINE__ . ' ' . $countUrl . '/' . $sizeOfurls . ' url='. $v1."\r\n";
+ $data='';
  $ch = curl_init();
  curl_setopt($ch, CURLOPT_HEADER         , 0);
  curl_setopt($ch, CURLOPT_URL            , $v1 );
@@ -231,6 +234,9 @@ foreach( $urls as $k1 => $v1){
  $data=curl_exec($ch);
  $curlinfo1=curl_getinfo($ch);
  curl_close($ch);
+ 
+ $descriptionHtml='';
+ $descriptionHtml=find1('name="description"' , 'content="' , $data); 
  
  $manifest=find1('rel="manifest"' , 'href="' , $data);
  
@@ -249,8 +255,8 @@ foreach( $urls as $k1 => $v1){
    }
   }
  }
- 
  if($htmlicon!=''){
+  $dataFav='';
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_HEADER         , 0);
   curl_setopt($ch, CURLOPT_URL            , $htmlicon );
@@ -277,6 +283,7 @@ foreach( $urls as $k1 => $v1){
   }else{
    $urlFav=$v1.'/favicon.ico';   
   }
+  $dataFav='';
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_HEADER         , 0);
   curl_setopt($ch, CURLOPT_URL            , $urlFav );
@@ -297,7 +304,7 @@ foreach( $urls as $k1 => $v1){
  
  
  
- 
+ $titleHtml='';
  $titleHtml=find3('<title',$data);
  
  if($manifest==''){ // for pwa-directory there is a rel=manifest without double quote around the value of the property rel !!!
@@ -345,7 +352,7 @@ foreach( $urls as $k1 => $v1){
    
    passthru($cmd1); // run it !
 
-   $lesManifestsEtUrls[]=array(
+   $toAdd=array(
     'manifest'        => $manifest,
     'manifestContent' => $manifestContent ,
     'url'             => $v1,
@@ -355,6 +362,12 @@ foreach( $urls as $k1 => $v1){
     'curlinfo2'       => $curlinfo2,
     'htmlicon'        => $htmlicon,
    );
+   if($descriptionHtml!=''){
+    $toAdd['descriptionHtml']=$descriptionHtml;
+   }
+   
+   
+   $lesManifestsEtUrls[]=$toAdd;
    sleep(1); // relax 1 second
    
    
@@ -377,7 +390,7 @@ foreach( $urls as $k1 => $v1){
   
   passthru($cmd1); // run it !
 
-  $lesManifestsEtUrls[]=array(
+  $toAdd=array(
 //   'manifest'        => $manifest,
 //   'manifestContent' => $manifestContent ,
    'url'             => $v1,
@@ -386,7 +399,14 @@ foreach( $urls as $k1 => $v1){
    'curlinfo1'       => $curlinfo1,
    'title'           => $title,
    'htmlicon'        => $htmlicon,
+   'titleHtml'       => $titleHtml,
   );
+  if($descriptionHtml!=''){
+   $toAdd['descriptionHtml']=$descriptionHtml;
+  }
+  
+  
+  $lesManifestsEtUrls[]=$toAdd;
   sleep(1); // relax 1 second
   
   
@@ -416,9 +436,6 @@ if(sizeof($lesManifestsEtUrls)>0){
    if(isset($v1['title'])){
     $lesManifestsEtUrls[$k1]['pwa-score']=0;
     $datajson['categories']['pwa']['score']=0;
-    $lesManifestsEtUrls[$k1]['titleHtml']=$titleHtml;
-   }else{
-    $lesManifestsEtUrls[$k1]['titleHtml']=$titleHtml;    
    }
    $lesManifestsEtUrls[$k1]['pwa-score']            =number_format($datajson['categories']['pwa']['score'],2,'.','');
    $lesManifestsEtUrls[$k1]['performance-score']    =number_format($datajson['categories']['performance']['score'],2,'.','');
@@ -631,19 +648,21 @@ if(sizeof($lesManifestsEtUrls)>0){
      $theBorderColor='';
     }
     
+    $theLinkTitle=(isset($jsonMan['description'])&&$jsonMan['description']!=''?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):(isset($v1['descriptionHtml'])?htmlentities($v1['descriptionHtml'],ENT_COMPAT,'UTF-8'):''));
+    
     $line="\r\n\r\n\r\n".' <tr>'."\r\n" .
      '  <td data-label="" class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'. "\r\n" .
      '   <div style="display:flex;">'. "\r\n" .
      '    <div style="display:block;width:51px;border:0;">'."\r\n" ;
     if($icon!=''){
      $line.=''.
-      '     <a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+      '     <a target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
       '     '.($icon!=''?'<img src="'.$icon.'" height="48" width="48" />':'') .
       '     </a>'. "\r\n" ;
     }else{
      if($v1['htmlicon']!=''){
      $line.=''.
-      '     <a target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):'').'">'.
+      '     <a target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
       '     '.'<img src="'.$v1['htmlicon'].'" height="48" width="48" />' .
       '     </a>'. "\r\n" ;      
      }
@@ -654,11 +673,11 @@ if(sizeof($lesManifestsEtUrls)>0){
      '    <div style="text-align:center;border:0;margin-left:2px;">'."\r\n" ;
     if(isset($v1['title'])){
      $line.=''.
-       '    <a class="l1" target="_blank" href="'.$v1['url'].'">'.(trim($v1['title'])==''?htmlentities($v1['titleHtml']):htmlentities($v1['title'])).'</a>'."\r\n";
+       '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.(trim($v1['title'])==''?htmlentities($v1['titleHtml']):htmlentities($v1['title'])).'</a>'."\r\n";
      
     }else{
      $line.=''.
-       '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.(isset($jsonMan['description'])?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):$v1['titleHtml']).'">'.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>'."\r\n";
+       '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>'."\r\n";
     }
     $line.=''.
      '    </div>'."\r\n".
@@ -689,12 +708,6 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='It is quite funny that Google doesn\'t like flash games but when you search some solitaire games in the search engine, many of them are flash game !'."\r\n";
    $line.='<br />Why ? :-).'."\r\n";
    $line.='</p>'."\r\n";
-/*   
-   $line.='<p>'."\r\n";
-   $line.='An other point is that Google tells you what you should do for your web site to have good results with the criterias they define ( see lighthouse audit panel in the tools ) but when you try to match these criterias, Google doesn\'t care about them and doesn\'t like diversity. '."\r\n";
-   $line.='<br />For example, many solitaire games are in good positions in search results because they belong to famous newspapers but they are exactly the same gameboss solitaire in an inner frame ( it is a good game by the way even if it is not a pwa)'."\r\n";
-   $line.='</p>'."\r\n";
-*/
    
    $line.='<p>Do not forget to play koolsol and, please, share it ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
    fwrite($fd,$line);

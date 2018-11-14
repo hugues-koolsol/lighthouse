@@ -69,7 +69,7 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
- 'https://www.koolsol.com/', // good game ;-)
+ 'http://jeux.lemonde.fr/games/klondike-solitaire/',
 );
 */
 
@@ -213,6 +213,14 @@ function absoluteUrl1($ref,$baseUrl){
 }
 //===============================================================================
 
+$dir1='temp';
+if(!is_dir($dir1)){
+ if(!mkdir($dir1,0777,true)){
+  die(__LINE__ . ' impossible de créer le répertoire '.dir1);
+ }
+}
+
+
 $lesManifestsEtUrls=array();
 $countUrl=0;
 $sizeOfurls=sizeof($urls);
@@ -234,6 +242,9 @@ foreach( $urls as $k1 => $v1){
  $data=curl_exec($ch);
  $curlinfo1=curl_getinfo($ch);
  curl_close($ch);
+ 
+ 
+ 
  
  $descriptionHtml='';
  $descriptionHtml=find1('name="description"' , 'content="' , $data); 
@@ -269,12 +280,14 @@ foreach( $urls as $k1 => $v1){
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
   $dataFav=curl_exec($ch);
   $curlinfo0=curl_getinfo($ch);
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $curlinfo0 , true ) . '</pre>' ; exit(0);
   curl_close($ch);
   if(!isset($curlinfo0['http_code']) || $curlinfo0['http_code']!=200 || ( isset($curlinfo0['content_type']) && $curlinfo0['content_type'] == 'text/html' ) ){
    $htmlicon='';
   }
  }
 
+ 
  if($htmlicon==''){
   $pos1=strpos($v1,'//');
   $pos2=strpos($v1,'/',$pos1+2);
@@ -297,21 +310,25 @@ foreach( $urls as $k1 => $v1){
   $dataFav=curl_exec($ch);
   $curlinfo0=curl_getinfo($ch);
   curl_close($ch);
-  if(isset($curlinfo0['http_code']) && $curlinfo0['http_code']==200 && isset($curlinfo0['content_type']) && $curlinfo0['content_type']!='text/html'){
+  if(isset($curlinfo0['http_code']) && $curlinfo0['http_code']==200 && isset($curlinfo0['content_type']) && $curlinfo0['content_type']!='text/html' && $curlinfo0['download_content_length']>50){
    $htmlicon=$urlFav;
   }
  }
  
  
- 
  $titleHtml='';
  $titleHtml=find3('<title',$data);
+ if($titleHtml==''){
+  $titleHtml=find1(' property="og:title"' , 'content="' , $data); // pas de title pour lemonde.fr  
+ }
+ 
+ 
  
  if($manifest==''){ // for pwa-directory there is a rel=manifest without double quote around the value of the property rel !!!
   $manifest=find2('rel=manifest' , 'href=' , $data);
  }
  
- $fichier0=rawurlencode($v1).'.html';
+ $fichier0='temp/'.rawurlencode($v1).'.html';
  if($fdhtml=fopen($fichier0,'w')){ fwrite($fdhtml, $data ); fclose($fdhtml); }
  
  
@@ -334,7 +351,7 @@ foreach( $urls as $k1 => $v1){
    
    $curlinfo2=curl_getinfo($ch);
    curl_close($ch);
-   $fichier2=rawurlencode($v1).'.manifest.json';
+   $fichier2='temp/'.rawurlencode($v1).'.manifest.json';
    if($fdmani=fopen($fichier2,'w')){ fwrite($fdmani, $manifestContent ); fclose($fdmani); }
    if(!isset($curlinfo2['http_code']) || $curlinfo2['http_code']!=200){
     echo __LINE__ . ' manifest url "' . $manifUrl . '" not pinged !' . "\r\n" ;   

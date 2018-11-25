@@ -32,7 +32,6 @@ $urls=array(  // the apps I like :-)
  'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
- 'https://amsarkadium-a.akamaihd.net/assets/global/game/webgl-klondike-solitaire/7cd852a3-2cad-498e-86f5-d30241d5b7de/?show_game_end=false&locale=en-US',
  'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
  'https://solitaire.frvr.com/', // good game
  'https://www.20minutes.fr/services/solitaire',
@@ -357,7 +356,7 @@ foreach( $urls as $k1 => $v1){
     echo __LINE__ . ' manifest url "' . $manifUrl . '" not pinged !' . "\r\n" ;   
    }
    
-   $fichier1=rawurlencode($v1).'.lighthouse.json';   
+   $fichier1='temp/'.rawurlencode($v1).'.lighthouse.json';   
    // launch lighthouse : adjust the path to reach thr lighthouse.cmd
    // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
    // --max-wait-for-load 10000       : after 10 seconds, abort !!
@@ -397,7 +396,7 @@ foreach( $urls as $k1 => $v1){
   
   $title=$titleHtml;
   
-  $fichier1=rawurlencode($v1).'.lighthouse.json';   
+  $fichier1='temp/'.rawurlencode($v1).'.lighthouse.json';   
   // launch lighthouse : adjust the path to reach thr lighthouse.cmd
   // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
   // --max-wait-for-load 10000       : after 10 seconds, abort !!

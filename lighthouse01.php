@@ -15,36 +15,43 @@ $urls=array(  // the apps I like :-)
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://grrd01.github.io/Dice/index.html',
+ 'https://grrd01.github.io/TicTacToe/index.html',
  'https://maaatch.games/',
  'https://pwa-directory.appspot.com/',
  'https://calculator.iondrimbafilho.me/',
  'https://outweb.io/',
  'https://todo.koolsol.app/',
  'https://pwa-store.firebaseapp.com/',
+
+ // 100% on pwa-directory to check
+ 'https://www.climasurgba.com.ar/menu',
+ 'https://cloudfour.com/',
+ 'https://gameclock.app/#/',
+ 'https://www.valor-dolar.cl/',
+ 'https://gebrauchtwagen.mitula.at/landingHome?utm_medium=pwa',
+ 'https://stammel.net/spiele/fendo/app/',
+ 'https://lowerspendings.com/', 
  
- // I like solitaire games but many of them are not pwas
- // and I think games should have an offline mode.
- 'https://www.koolsol.com/', // good game ;-)
+ // I like solitaire games but many of them are not pwas and I think games should have an offline mode.
+ 'https://www.koolsol.app/', // good game ;-)
+ 'https://www.koolsol.com/', // good game ;-) // test to see if .app and .com are different even if it is the same app on the same server.
+ 'https://solitaire.frvr.com/', // good game
+ 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
+ 'https://freesolitaire.win/',
  'https://www.solitaire-web-app.com/',
  'https://worldofsolitaire.com/fr/',
- 'https://freesolitaire.win/',
- 'https://cdn.htmlgames.com/KlondikeSolitaire/index.html?bgcolor=%23d9edf7', // KO
  'https://www.google.com/logos/fnbx/solitaire/standalone.html',
- 'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content',
  'https://www.jeu-du-solitaire.com/',
  'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
- 'https://solitaire.frvr.com/', // good game
  'https://www.20minutes.fr/services/solitaire',
- 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
  'https://www.lci.fr/jeux/solitaire/',
  'https://www.planet.fr/jeu-solitaire',
  'https://games.washingtonpost.com/games/klondike-solitaire/',
- 'http://games.latimes.com/games/klondike-solitaire/',
  'https://justsolitaire.com/Klondike_Solitaire/',
  'https://www.solitaire-klondike.com/klondike.html',
  'https://www.solitr.com/klondike-turn-one',
- 'https://games.aarp.org/games/klondike-solitaire-new',
- 'https://www.klondikesolitaire.net/',
+ 'https://games.aarp.org/games/klondike-solitaire-new', // 
+ 'https://www.klondikesolitaire.net/', // good game on web but not on mobile
  'https://www.solitaire-play.com/',
  'https://www.solitairejeux.com/jeu/Pirate+Klondike',
  'https://poki.com/en/g/poki-klondike-solitaire',
@@ -54,15 +61,17 @@ $urls=array(  // the apps I like :-)
  'http://pasjans-online.pl/',
  'http://www.mathster.com/games/solitaire/',
  'http://www.classic-solitaire.com/',
- 'http://jeux.lemonde.fr/games/klondike-solitaire/',
- 'http://jeux.meteocity.com/games/klondike-solitaire/',
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
- 'http://www.jeusolitaire.fr/jouerausolitaire/solitaire.php',
- 'http://www.jeux.fr/jeu/solitaire-classique',
  'http://solitaire-jeu.eu/',
  'http://www.jeusolitairegratuit.fr/jeux-de-cartes-gratuits-en-ligne.php?jeu-de-cartes-en-ligne=20',
  'http://www.4j.com/Solitaire-Master',
+// 'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content', // add on first page
+// 'http://jeux.meteocity.com/games/klondike-solitaire/', // bad score same as latimes, lemonde and meteo
+// 'http://jeux.lemonde.fr/games/klondike-solitaire/', // bad score
+// 'http://www.jeusolitaire.fr/jouerausolitaire/solitaire.php', // bad score
+// 'http://games.latimes.com/games/klondike-solitaire/', // bad score same as latimes, lemonde and meteo
+// 'http://www.jeux.fr/jeu/solitaire-classique', // bad score
 );
 
 /*
@@ -156,7 +165,7 @@ function find2( $what , $contentOf , $body){ // find the manifest file name with
   
 }
 //===============================================================================
-function find3($what,$body){
+function find3($what,$body){ // find "<title" in the body
  $ret='';
  $pos1=stripos($body,$what);
  if($pos1!==false){
@@ -576,7 +585,7 @@ if(sizeof($lesManifestsEtUrls)>0){
 
    $line.='</head>' ."\r\n";
    $line.='<body>' ."\r\n";
-   $line.='<h1>lighthouse score rank for some of pwas that I like !</h1>' ."\r\n";
+   $line.='<h1>lighthouse score rank for some pwa that I like !</h1>' ."\r\n";
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, the curl time in seconds makes the difference<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
@@ -704,8 +713,18 @@ if(sizeof($lesManifestsEtUrls)>0){
      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
-     '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               .
-     '<br class="br2" />'.(isset($v1['curlinfo2']['url'])?'<a style="display:inline-block;margin:3px auto;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest</a>':'').'' .
+     '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               ;
+    $shortUrl=$v1['url'];
+    if(strpos($shortUrl,'https://')!==false){
+     $shortUrl=substr($shortUrl,8);
+    }else{
+     $shortUrl=substr($shortUrl,7);     
+    }
+    $shortUrl=substr($shortUrl,0,strpos($shortUrl,'/'));
+//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $shortUrl , true ) . '</pre>' ; exit(0);
+     
+    $line.=''.
+     '<br class="br2" />'.(isset($v1['curlinfo2']['url'])?'<a style="display:inline-block;margin:3px auto;font-size:0.6em;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest '.$shortUrl.'</a>':'<span style="font-size:0.6em;">'.$shortUrl.'').'</span>' .
      ''.'</td>' ."\r\n";
     $line.='  <td data-label="curl total time" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
     $line.=''."</tr>\r\n" ;
@@ -734,7 +753,10 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line= '</html>' ."\r\n";  fwrite($fd,$line);
    fclose($fd);
   }
-    
+      
+  // ====================================================
+  // ========= end build the final html file ============
+  // ====================================================
   
   
   

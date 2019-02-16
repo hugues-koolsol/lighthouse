@@ -5,6 +5,8 @@
 // it will create json and html file for each url
 // it will create a out1.csv                            
 // it will create a lighthouse-score-rank-for-pwa.html  
+// To install lighthouse on your pc, install node then run:
+// npm install -g lighthouse
 
 
 // for the ones commented, the manifest file has non been founded
@@ -22,6 +24,7 @@ $urls=array(  // the apps I like :-)
  'https://outweb.io/',
  'https://todo.koolsol.app/',
  'https://pwa-store.firebaseapp.com/',
+ 'https://shop.polymer-project.org/', // the google reference for lighthouse : https://developers.google.com/web/tools/lighthouse/
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',
@@ -77,7 +80,7 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the size of the array of urls
 $urls=array(  
- 'http://jeux.lemonde.fr/games/klondike-solitaire/',
+ 'https://www.koolsol.com/',
 );
 */
 
@@ -373,8 +376,12 @@ foreach( $urls as $k1 => $v1){
    // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
    // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --throttling.rttMs --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
    
+   
    $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --throttling.rttMs --max-wait-for-load 10000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
    
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '."\r\n" . $cmd1 . '</pre>' ; exit(0);
+// C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd https://www.koolsol.com/ --throttling.rttMs --max-wait-for-load 10000 --skip-audits errors-in-console --quiet --output json >temp/https%3A%2F%2Fwww.koolsol.com%2F.lighthouse.json
+
    passthru($cmd1); // run it !
 
    $toAdd=array(
@@ -665,10 +672,10 @@ if(sizeof($lesManifestsEtUrls)>0){
     $couleurHex=dechex($couleur);
     $couleurHex=strlen($couleurHex)==1?'0'.$couleurHex:$couleurHex;
     if($rank==1){
-     $theColor='009400';
+     $theColor=$couleurHex.'ff00';
      $theBorderColor='border:2px red solid;';
     }else{
-     $theColor=$couleurHex.'ff00';
+     $theColor='009400';
      $theBorderColor='border:2px #'.$couleurHex.'ff00'.' solid;';
      $theBorderColor='';
     }
@@ -707,8 +714,8 @@ if(sizeof($lesManifestsEtUrls)>0){
     $line.=''.
      '    </div>'."\r\n".
      '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
-     '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#eaf59c':'#333').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
-     '  <td data-label="scores : pwa , perf , accessi , bst-pract. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'">'                 .
+     '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
+     '  <td data-label="scores : pwa , perf , accessi , bst-pract. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
@@ -726,7 +733,7 @@ if(sizeof($lesManifestsEtUrls)>0){
     $line.=''.
      '<br class="br2" />'.(isset($v1['curlinfo2']['url'])?'<a style="display:inline-block;margin:3px auto;font-size:0.6em;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest '.$shortUrl.'</a>':'<span style="font-size:0.6em;">'.$shortUrl.'').'</span>' .
      ''.'</td>' ."\r\n";
-    $line.='  <td data-label="curl total time" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
+    $line.='  <td data-label="curl total time" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
     $line.=''."</tr>\r\n" ;
     fwrite($fd,$line);
    }
@@ -757,6 +764,7 @@ if(sizeof($lesManifestsEtUrls)>0){
   // ====================================================
   // ========= end build the final html file ============
   // ====================================================
+
   
   
   

@@ -25,6 +25,10 @@ $urls=array(  // the apps I like :-)
  'https://todo.koolsol.app/',
  'https://pwa-store.firebaseapp.com/',
  'https://shop.polymer-project.org/', // the google reference for lighthouse : https://developers.google.com/web/tools/lighthouse/
+ 'https://minesweeper.now.sh/',
+ 'https://minesweeper.koolsol.app/',
+ 'http://xn--dmineur-bya.eu/',
+ 'https://proxx.app/',
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',

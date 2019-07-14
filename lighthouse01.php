@@ -11,7 +11,6 @@
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
- 'https://zen-of-programming.com/',
  'https://appsco.pe/',
  'https://airhorner.com/',
  'https://grrd01.github.io/4inaRow/index.html',
@@ -24,10 +23,11 @@ $urls=array(  // the apps I like :-)
  'https://outweb.io/',
  'https://todo.koolsol.app/',
  'https://pwa-store.firebaseapp.com/',
- 'https://shop.polymer-project.org/', // the google reference for lighthouse : https://developers.google.com/web/tools/lighthouse/
+ 'https://stopwatch-app.com/',
+// 'https://shop.polymer-project.org/', // the google reference for lighthouse : https://developers.google.com/web/tools/lighthouse/
  'https://minesweeper.now.sh/',
  'https://minesweeper.koolsol.app/',
- 'http://xn--dmineur-bya.eu/',
+// 'http://xn--dmineur-bya.eu/', // not on mobile
  'https://proxx.app/',
 
  // 100% on pwa-directory to check
@@ -35,14 +35,11 @@ $urls=array(  // the apps I like :-)
  'https://cloudfour.com/',
  'https://gameclock.app/#/',
  'https://www.valor-dolar.cl/',
- 'https://gebrauchtwagen.mitula.at/landingHome?utm_medium=pwa',
- 'https://stammel.net/spiele/fendo/app/',
  'https://lowerspendings.com/', 
  
  // I like solitaire games but many of them are not pwas and I think games should have an offline mode.
  'https://www.koolsol.app/', // good game ;-)
  'https://www.koolsol.com/', // good game ;-) // test to see if .app and .com are different even if it is the same app on the same server.
- 'https://solitaire.frvr.com/', // good game
  'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
  'https://freesolitaire.win/',
  'https://www.solitaire-web-app.com/',
@@ -50,29 +47,30 @@ $urls=array(  // the apps I like :-)
  'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://www.jeu-du-solitaire.com/',
  'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
- 'https://www.20minutes.fr/services/solitaire',
- 'https://www.lci.fr/jeux/solitaire/',
  'https://www.planet.fr/jeu-solitaire',
  'https://games.washingtonpost.com/games/klondike-solitaire/',
  'https://justsolitaire.com/Klondike_Solitaire/',
  'https://www.solitaire-klondike.com/klondike.html',
  'https://www.solitr.com/klondike-turn-one',
  'https://games.aarp.org/games/klondike-solitaire-new', // 
- 'https://www.klondikesolitaire.net/', // good game on web but not on mobile
  'https://www.solitaire-play.com/',
- 'https://www.solitairejeux.com/jeu/Pirate+Klondike',
  'https://poki.com/en/g/poki-klondike-solitaire',
  'https://www.gralon.net/jeux-en-ligne/jeu-solitaire.htm',
  'https://www.vivenoel.com/calendrier/2dec.htm',
  'https://cardgames.io/solitaire/',
  'http://pasjans-online.pl/',
  'http://www.mathster.com/games/solitaire/',
- 'http://www.classic-solitaire.com/',
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
- 'http://solitaire-jeu.eu/',
- 'http://www.jeusolitairegratuit.fr/jeux-de-cartes-gratuits-en-ligne.php?jeu-de-cartes-en-ligne=20',
- 'http://www.4j.com/Solitaire-Master',
+ 'http://www.jeusolitairegratuit.fr/jeux-de-cartes-gratuits-en-ligne.php?jeu-de-cartes-en-ligne=20', // gameboss, voir plus haut
+// 'https://solitaire.frvr.com/', // good game but does not work on private mode anymore
+// 'https://www.20minutes.fr/services/solitaire', // not on mobile
+// 'https://www.lci.fr/jeux/solitaire/', // not mobile iframe sur https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire-mobile#content
+// 'http://www.classic-solitaire.com/', // does not work on mobile
+// 'http://solitaire-jeu.eu/', // same as http://solitaires-online.com/
+// 'https://www.klondikesolitaire.net/', // good game on web but not on mobile
+// 'https://www.solitairejeux.com/jeu/Pirate+Klondike', // pubs invasives
+// 'http://www.4j.com/Solitaire-Master', // pub invasive
 // 'https://jeux-dot-metronews-compute-plateform.appspot.com/solitaire#content', // add on first page
 // 'http://jeux.meteocity.com/games/klondike-solitaire/', // bad score same as latimes, lemonde and meteo
 // 'http://jeux.lemonde.fr/games/klondike-solitaire/', // bad score

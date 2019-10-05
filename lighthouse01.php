@@ -22,21 +22,29 @@ $urls=array(  // the apps I like :-)
  'https://www.koolsol.com/', // good game ;-) // test to see if .app and .com are different even if it is the same app on the same server.
  'https://gameclock.app/#/',
  'https://calculator.iondrimbafilho.me/',
+ 'https://www.timroes.de/'     ,   // 100
+ 'https://tcg.loke.dev/?standalone=true',
+ 'https://rotavo-pwa.firebaseapp.com/',
+ 'https://rgbtohex.samdlc.com/',
+ 'https://mastermind.jull.dev/',
+ 'https://janzbinden.github.io/tictactoe/',
 
+ 'https://pwa-directory.appspot.com/',
  'https://appsco.pe/',
+ 'https://outweb.io/',
+ 'https://pwa-store.firebaseapp.com/',
+ 'https://tldr.hackeryogi.com',
+ 'https://simply-js.github.io/dark-compass/index.html',
  'https://airhorner.com/',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://grrd01.github.io/Dice/index.html',
  'https://maaatch.games/',
- 'https://pwa-directory.appspot.com/',
- 'https://outweb.io/',
- 'https://pwa-store.firebaseapp.com/',
  'https://stopwatch-app.com/',
-// 'https://shop.polymer-project.org/', // the google reference for lighthouse : https://developers.google.com/web/tools/lighthouse/
  'https://minesweeper.now.sh/',
-// 'http://xn--dmineur-bya.eu/', // not on mobile
  'https://proxx.app/', // the google proxx is not so good on lighthouse ( do google teams meet or speak together ? )
+ 'https://typing.octet.app/',
+ 'https://stammel.net/projekte/sfxr/',
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',
@@ -44,14 +52,11 @@ $urls=array(  // the apps I like :-)
  'https://www.valor-dolar.cl/',
  
  // I like solitaire games but many of them are not pwas and I think games should have an offline mode.
- 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game
  'https://www.solitaire-web-app.com/',
  'https://www.google.com/logos/fnbx/solitaire/standalone.html',
  'https://www.jeu-du-solitaire.com/',
- 'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en',
  'https://www.planet.fr/jeu-solitaire',
  'https://www.solitaire-klondike.com/klondike.html',
- 'https://www.solitr.com/klondike-turn-one',
  'https://games.aarp.org/games/klondike-solitaire-new', // 
  'https://www.solitaire-play.com/',
  'https://poki.com/en/g/poki-klondike-solitaire',
@@ -63,6 +68,9 @@ $urls=array(  // the apps I like :-)
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
  
+// 'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en', // no picto
+// 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game but no picto
+// 'https://www.solitr.com/klondike-turn-one', // no picto
 // 'https://lowerspendings.com/',  // KO
 // 'https://worldofsolitaire.com/fr/', // Runtime error encountered: Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Details: net::ERR_CONNECTION_CLOSED)
 // 'http://www.jeusolitairegratuit.fr/jeux-de-cartes-gratuits-en-ligne.php?jeu-de-cartes-en-ligne=20', // gameboss, voir plus haut
@@ -89,17 +97,23 @@ $urls=array(
  'https://www.koolsol.com/',
  'https://memory.koolsol.app/',
  'https://todo.koolsol.app/',
-);
-*/
-
-/*
-// for test only, reduce the array of urls
-$urls=array(  
  'https://www.koolsol.com/',
  'https://freesolitaire.win/',
 );
 */
-
+/*
+// these url are suppose to be 100 for pwa-directory
+$urls=array(  
+ 'https://memory.koolsol.app/',                // 100 :-) my reference
+ 'https://minesweeper.koolsol.app/',
+// 'https://whatsadd.tools/' ,                 // 99.1
+// 'https://pwatictactoe.web.app/index.html',  // 99.55
+// 'https://hnpwa-vanilla.firebaseapp.com/',   // 97.6
+// 'https://madskristensen.net/' ,             // 98.5
+// 'https://jcl.cz/',                          // 93.9
+// 'https://ehazi.hu/',                        // 92.8
+);
+*/
 //===============================================================================
 function find1( $what , $contentOf , $body){ // find the manifest file name
  $ret='';
@@ -393,10 +407,8 @@ foreach( $urls as $k1 => $v1){
    // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --throttling.rttMs --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
    
    
-   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
+   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
    
-//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = '."\r\n" . $cmd1 . '</pre>' ; exit(0);
-// C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd https://www.koolsol.com/ --throttling.rttMs --max-wait-for-load 10000 --skip-audits errors-in-console --quiet --output json >temp/https%3A%2F%2Fwww.koolsol.com%2F.lighthouse.json
 
    passthru($cmd1); // run it !
 
@@ -432,7 +444,7 @@ foreach( $urls as $k1 => $v1){
   // launch lighthouse : adjust the path to reach thr lighthouse.cmd
   // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
   // --max-wait-for-load 3000        : after 3 seconds, abort !!
-  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --skip-audits errors-in-console --quiet --output json >'.$fichier1."\r\n";
+  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
   
   passthru($cmd1); // run it !
 
@@ -632,6 +644,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
    $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, time for first paint makes the difference<p>' ."\r\n";
    $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
+   $line.='<p>The pwas on the top of the list below have a 100 for all lighthouse scores : pwa, performance, accessibility, best-practice and seo . It is not very easy to get a 100 for all these scores but some can reach this challenge 💪 :-)</p>' ."\r\n";
    $line.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";
    $line.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
    $line.='<table class="tableResult1">' ."\r\n";
@@ -752,7 +765,7 @@ if(sizeof($lesManifestsEtUrls)>0){
      $line.=''.
       '    </div>'."\r\n".
       '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
-      '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
+      '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
       '  <td data-label="scores : pwa , perf , accessi , bst-pract. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
       '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
       '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .

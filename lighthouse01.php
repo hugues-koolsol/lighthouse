@@ -27,14 +27,15 @@ $urls=array(  // the apps I like :-)
  'https://rotavo-pwa.firebaseapp.com/',
  'https://rgbtohex.samdlc.com/',
  'https://mastermind.jull.dev/',
+ 'https://sudoku.jull.dev/',
  'https://janzbinden.github.io/tictactoe/',
+ 'https://yelli.com/',
+ 'https://findpwa.com/',
 
  'https://pwa-directory.appspot.com/',
  'https://appsco.pe/',
- 'https://outweb.io/',
  'https://pwa-store.firebaseapp.com/',
  'https://tldr.hackeryogi.com',
- 'https://simply-js.github.io/dark-compass/index.html',
  'https://airhorner.com/',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
@@ -43,6 +44,7 @@ $urls=array(  // the apps I like :-)
  'https://stopwatch-app.com/',
  'https://minesweeper.now.sh/',
  'https://proxx.app/', // the google proxx is not so good on lighthouse ( do google teams meet or speak together ? )
+ 'https://squoosh.app/',
  'https://typing.octet.app/',
  'https://stammel.net/projekte/sfxr/',
 
@@ -50,6 +52,7 @@ $urls=array(  // the apps I like :-)
  'https://www.climasurgba.com.ar/menu',
  'https://cloudfour.com/',
  'https://www.valor-dolar.cl/',
+ 'https://www.mankier.com/',
  
  // I like solitaire games but many of them are not pwas and I think games should have an offline mode.
  'https://www.solitaire-web-app.com/',
@@ -68,6 +71,7 @@ $urls=array(  // the apps I like :-)
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
  
+// 'https://outweb.io/', // does not exist anymore
 // 'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en', // no picto
 // 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game but no picto
 // 'https://www.solitr.com/klondike-turn-one', // no picto
@@ -94,13 +98,15 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the array of urls
 $urls=array(  
- 'https://www.koolsol.com/',
- 'https://memory.koolsol.app/',
- 'https://todo.koolsol.app/',
- 'https://www.koolsol.com/',
+// 'https://www.koolsol.com/',
+// 'https://memory.koolsol.app/',
+// 'https://todo.koolsol.app/',
+// 'https://www.koolsol.com/',
  'https://freesolitaire.win/',
 );
 */
+
+
 /*
 // these url are suppose to be 100 for pwa-directory
 $urls=array(  
@@ -286,9 +292,11 @@ foreach( $urls as $k1 => $v1){
  curl_close($ch);
  
 // echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $curlinfo1 , true ) . '</pre>' ; 
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $data , true ) . '</pre>' ; 
  
  $descriptionHtml='';
  $descriptionHtml=find1('name="description"' , 'content="' , $data); 
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $descriptionHtml , true ) . '</pre>' ; exit(0);
  
  $manifest=find1('rel="manifest"' , 'href="' , $data);
  
@@ -307,6 +315,7 @@ foreach( $urls as $k1 => $v1){
    }
   }
  }
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $htmlicon , true ) . '</pre>' ; exit(0);
  if($htmlicon!=''){
   $dataFav='';
   $ch = curl_init();
@@ -363,12 +372,14 @@ foreach( $urls as $k1 => $v1){
   $titleHtml=find1(' property="og:title"' , 'content="' , $data); // pas de title pour lemonde.fr  
  }
  
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $titleHtml , true ) . '</pre>' ; exit(0);
  
  
  if($manifest==''){ // for pwa-directory there is a rel=manifest without double quote around the value of the property rel !!!
   $manifest=find2('rel=manifest' , 'href=' , $data);
  }
  
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $manifest , true ) . '</pre>' ; exit(0);
  $fichier0='temp/'.rawurlencode($v1).'.html';
  if($fdhtml=fopen($fichier0,'w')){ fwrite($fdhtml, $data ); fclose($fdhtml); }
  
@@ -389,6 +400,8 @@ foreach( $urls as $k1 => $v1){
    curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
 
    $manifestContent=curl_exec($ch);
+   
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $manifestContent , true ) . '</pre>' ; exit(0);
    
    $curlinfo2=curl_getinfo($ch);
    curl_close($ch);
@@ -425,10 +438,11 @@ foreach( $urls as $k1 => $v1){
    if($descriptionHtml!=''){
     $toAdd['descriptionHtml']=$descriptionHtml;
    }
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $toAdd , true ) . '</pre>' ; exit(0);
    
    
    $lesManifestsEtUrls[]=$toAdd;
-   sleep(1); // relax 1 second
+   usleep(250000); // relax 0.25 second
    
    
   }else{
@@ -494,10 +508,14 @@ function cmp02($a, $b){
 //===============================================================================================================================
 //===============================================================================================================================
 
+//echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls , true ) . '</pre>' ; exit(0);
+
+
 if(sizeof($lesManifestsEtUrls)>0){
  
  foreach( $lesManifestsEtUrls as $k1 => $v1 ){
   $fichier1=$v1['fichier'];
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $fichier1 , true ) . '</pre>' ; exit(0);
   $datajson=json_decode(file_get_contents($fichier1),true);
   if($datajson!==NULL){
    if(isset($v1['title'])){
@@ -526,13 +544,18 @@ if(sizeof($lesManifestsEtUrls)>0){
     }
    }
 //   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $datajson['audits']['metrics']['details']['items'] , true ) . '</pre>' ; exit(0);
-  }                            
+  }else{
+   echo __FILE__ . ' ' . __LINE__ . ' json incorrect pour = ' . $fichier1 . "\r\n" ; 
+  }   
  }
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( __LINE__ , true ) . '</pre>' ; exit(0);
  foreach( $lesManifestsEtUrls as $k1 => $v1 ){
   if(!isset($v1['global-score'])){
    unset($lesManifestsEtUrls[$k1]);
   }
  }
+ 
+// echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls , true ) . '</pre>' ; exit(0);
  
  if(sizeof($lesManifestsEtUrls)>0){
   usort($lesManifestsEtUrls,'cmp02');
@@ -574,7 +597,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    fwrite($fdlesManifestsEtUrls, '<'.'?php'."\r\n".'$lesManifestsEtUrls=' . var_export( $lesManifestsEtUrls,true ) .';' ); 
    fclose($fdlesManifestsEtUrls); 
   }
-  
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( __LINE__ , true ) . '</pre>' ; exit(0);
   // ====================================================
   // =========== build the final html file ==============
   // ====================================================
@@ -659,6 +682,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $rankGlobal=0;
    $scorePrec=0;
    foreach($lesManifestsEtUrls as $k1=> $v1){
+//    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $v1['firstContentfulPaint'] , true ) . '</pre>' ; exit(0);
     if($v1['firstContentfulPaint']<10000){
 
      $manifestContent=isset($v1['manifestContent'])?$v1['manifestContent']:'';
@@ -689,6 +713,7 @@ if(sizeof($lesManifestsEtUrls)>0){
        }
       }
      }
+     
      if($icon==''){
      }else{
       $ch = curl_init();
@@ -787,6 +812,9 @@ if(sizeof($lesManifestsEtUrls)>0){
      $line.='  <td data-label="first paint" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
      
      $line.="\r\n </tr>\r\n" ;
+     
+//     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $line , true ) . '</pre>' ; exit(0);
+     
      fwrite($fd,$line);
     }
    }

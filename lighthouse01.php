@@ -20,7 +20,6 @@ $urls=array(  // the apps I like :-)
  'https://minesweeper.koolsol.app/',
  'https://www.koolsol.app/', // good game ;-)
  'https://www.koolsol.com/', // good game ;-) // test to see if .app and .com are different even if it is the same app on the same server.
- 'https://gameclock.app/#/',
  'https://calculator.iondrimbafilho.me/',
  'https://www.timroes.de/'     ,   // 100
  'https://tcg.loke.dev/?standalone=true',
@@ -31,11 +30,11 @@ $urls=array(  // the apps I like :-)
  'https://janzbinden.github.io/tictactoe/',
  'https://yelli.com/',
  'https://findpwa.com/',
+ 'https://pwapps.co/',
 
  'https://pwa-directory.appspot.com/',
  'https://appsco.pe/',
  'https://pwa-store.firebaseapp.com/',
- 'https://tldr.hackeryogi.com',
  'https://airhorner.com/',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
@@ -47,6 +46,7 @@ $urls=array(  // the apps I like :-)
  'https://squoosh.app/',
  'https://typing.octet.app/',
  'https://stammel.net/projekte/sfxr/',
+ 'http://appsmartpush.com/',
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',
@@ -71,6 +71,8 @@ $urls=array(  // the apps I like :-)
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
  
+// 'https://gameclock.app/#/', // does not exist anymore
+// 'https://tldr.hackeryogi.com', // manifest file not founded for url
 // 'https://outweb.io/', // does not exist anymore
 // 'https://games.softgames.com/games/best-classic-solitaire/gamesites/844/locale/en', // no picto
 // 'https://games.gameboss.com/klondikesolitaire/index.html?lang=fr', // good game but no picto
@@ -266,7 +268,28 @@ if(!is_dir($dir1)){
   die(__LINE__ . ' impossible de créer le répertoire '.dir1);
  }
 }
-
+// two times first loops to wakeup the urls
+for($i=0;$i<2;$i++){
+ foreach( $urls as $k1 => $v1){
+  echo __LINE__ . ' wake up url='. $v1."\r\n"; 
+  $data='';
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_HEADER         , 0);
+  curl_setopt($ch, CURLOPT_URL            , $v1 );
+  curl_setopt($ch, CURLOPT_HEADER         , 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1);
+  curl_setopt($ch, CURLOPT_TIMEOUT        , 5);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+  curl_setopt($ch, CURLOPT_USERAGENT      ,'Mozilla/5.0 (Linux; Android 6.0;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36');
+  curl_setopt($ch, CURLOPT_ENCODING       , ''); // avoid gzip format
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
+  $manifest='';
+  $data=curl_exec($ch);
+  $curlinfo1=curl_getinfo($ch);
+  curl_close($ch);
+  usleep(30000);
+ }
+}
 
 $lesManifestsEtUrls=array();
 $countUrl=0;
@@ -765,13 +788,13 @@ if(sizeof($lesManifestsEtUrls)>0){
      if($icon!=''){
       $line.=''.
        '     <a target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
-       '     '.($icon!=''?'<img src="'.$icon.'" height="48" width="48" />':'') .
+       '     '.($icon!=''?'<img src="'.$icon.'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />':'') .
        '     </a>'. "\r\n" ;
      }else{
       if($v1['htmlicon']!=''){
       $line.=''.
        '     <a target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
-       '     '.'<img src="'.$v1['htmlicon'].'" height="48" width="48" />' .
+       '     '.'<img src="'.$v1['htmlicon'].'" height="48" width="48"  loading="lazy" alt="'.$theLinkTitle.'" />' .
        '     </a>'. "\r\n" ;      
       }
       
@@ -854,6 +877,8 @@ if(sizeof($lesManifestsEtUrls)>0){
  
  }
 }
-echo "Good job!";
+echo "Good job!, Now I go for a 10 minutes nap to see the logs";
+sleep(600);
+
 
 exit(0);

@@ -13,13 +13,15 @@
 $urls=array(  // the apps I like :-)
  
  // the best lighthouse scores first
- 'https://freesolitaire.win/',
- 'https://memory.koolsol.app/',
- 'https://todo.koolsol.app/',
- 'https://grrd01.github.io/TicTacToe/index.html',
+ 'https://memory.koolsol.app/',    // ;-)
+ 'https://sudoku.koolsol.app/',    // ;-)
+ 'https://todo.koolsol.app/',      // ;-)
+ 'https://syllabes.koolsol.app/',  // ;-)
+ 'https://www.koolsol.app/',       // ;-)
+ 'https://www.koolsol.com/',       // ;-) // test to see if .app and .com are different even if it is the same app on the same server.
  'https://minesweeper.koolsol.app/',
- 'https://www.koolsol.app/', // good game ;-)
- 'https://www.koolsol.com/', // good game ;-) // test to see if .app and .com are different even if it is the same app on the same server.
+ 'https://freesolitaire.win/',
+ 'https://grrd01.github.io/TicTacToe/index.html',
  'https://calculator.iondrimbafilho.me/',
  'https://www.timroes.de/'     ,   // 100
  'https://tcg.loke.dev/?standalone=true',
@@ -42,7 +44,7 @@ $urls=array(  // the apps I like :-)
  'https://maaatch.games/',
  'https://stopwatch-app.com/',
  'https://minesweeper.now.sh/',
- 'https://proxx.app/', // the google proxx is not so good on lighthouse ( do google teams meet or speak together ? )
+ 'https://proxx.app/', // the google proxx does not work on ie and is not so good on lighthouse ( do google teams meet or speak together ? )
  'https://squoosh.app/',
  'https://typing.octet.app/',
  'https://stammel.net/projekte/sfxr/',
@@ -100,11 +102,13 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the array of urls
 $urls=array(  
-// 'https://www.koolsol.com/',
-// 'https://memory.koolsol.app/',
+ 'https://maaatch.games/',
+ 'https://www.koolsol.com/',
+ 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',
+// 'https://grrd01.github.io/4inaRow/index.html',
 // 'https://www.koolsol.com/',
- 'https://freesolitaire.win/',
+// 'https://freesolitaire.win/',
 );
 */
 
@@ -339,6 +343,8 @@ foreach( $urls as $k1 => $v1){
   }
  }
 // echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $htmlicon , true ) . '</pre>' ; exit(0);
+ $typeIcone='gif';
+ $dataFav='R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs';
  if($htmlicon!=''){
   $dataFav='';
   $ch = curl_init();
@@ -357,6 +363,9 @@ foreach( $urls as $k1 => $v1){
   curl_close($ch);
   if(!isset($curlinfo0['http_code']) || $curlinfo0['http_code']!=200 || ( isset($curlinfo0['content_type']) && $curlinfo0['content_type'] == 'text/html' ) ){
    $htmlicon='';
+  }else{
+   $dataFav=base64_encode($dataFav);
+   $typeIcone=(strpos($htmlicon,'.png')!==false?'png':(strpos($htmlicon,'.gif')!==false?'gif':(strpos($htmlicon,'.jpg')!==false?'jpg':(strpos($htmlicon,'.ico')!==false?'ico':''))));
   }
  }
 
@@ -385,6 +394,8 @@ foreach( $urls as $k1 => $v1){
   curl_close($ch);
   if(isset($curlinfo0['http_code']) && $curlinfo0['http_code']==200 && isset($curlinfo0['content_type']) && $curlinfo0['content_type']!='text/html' && $curlinfo0['download_content_length']>50){
    $htmlicon=$urlFav;
+   $typeIcone='ico';
+   $dataFav=base64_encode($dataFav);
   }
  }
  
@@ -405,7 +416,6 @@ foreach( $urls as $k1 => $v1){
 // echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $manifest , true ) . '</pre>' ; exit(0);
  $fichier0='temp/'.rawurlencode($v1).'.html';
  if($fdhtml=fopen($fichier0,'w')){ fwrite($fdhtml, $data ); fclose($fdhtml); }
- 
  
  if($manifest!=''){
   $manifUrl=absoluteUrl1($manifest,$v1);
@@ -447,6 +457,8 @@ foreach( $urls as $k1 => $v1){
    
 
    passthru($cmd1); // run it !
+   
+   
 
    $toAdd=array(
     'manifest'        => $manifest,
@@ -457,6 +469,8 @@ foreach( $urls as $k1 => $v1){
     'curlinfo1'       => $curlinfo1,
     'curlinfo2'       => $curlinfo2,
     'htmlicon'        => $htmlicon,
+    'base64icon'      => $dataFav,
+    'typeIcone'       => $typeIcone
    );
    if($descriptionHtml!=''){
     $toAdd['descriptionHtml']=$descriptionHtml;
@@ -495,6 +509,8 @@ foreach( $urls as $k1 => $v1){
    'title'           => $title,
    'htmlicon'        => $htmlicon,
    'titleHtml'       => $titleHtml,
+   'base64icon'      => $dataFav,
+   'typeIcone'       => $typeIcone
   );
   if($descriptionHtml!=''){
    $toAdd['descriptionHtml']=$descriptionHtml;
@@ -508,6 +524,9 @@ foreach( $urls as $k1 => $v1){
   
  }
 }
+
+//echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls , true ) . '</pre>' ; exit(0);
+
 //===============================================================================================================================
 //===============================================================================================================================
 function cmp01($a, $b){
@@ -616,10 +635,6 @@ if(sizeof($lesManifestsEtUrls)>0){
    fclose($fd);
   }
   
-  if($fdlesManifestsEtUrls=fopen('lesManifestsEtUrls.php','w')){ 
-   fwrite($fdlesManifestsEtUrls, '<'.'?php'."\r\n".'$lesManifestsEtUrls=' . var_export( $lesManifestsEtUrls,true ) .';' ); 
-   fclose($fdlesManifestsEtUrls); 
-  }
 //  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( __LINE__ , true ) . '</pre>' ; exit(0);
   // ====================================================
   // =========== build the final html file ==============
@@ -632,116 +647,67 @@ if(sizeof($lesManifestsEtUrls)>0){
    }
   }
   
-  
+  $listePourBlog='';
   if($fd=fopen($dir.'/'.'lighthouse-score-rank-for-pwa.html','w')){
    $count=0;
    $count++;
    $line='';
    
-   $line.='<!DOCTYPE html>'."\r\n";
-   $line.='<html lang="en">'."\r\n";
-   $line.='<head>'."\r\n";
-   $line.='<meta charset="utf-8">'."\r\n";
-   $line.='<title>lighthouse score rank for pwa</title>'."\r\n";
-   $line.='<meta name="mobile-web-app-capable" content="yes" />'."\r\n";
-   $line.='<meta name="viewport" content="width=device-width, initial-scale=1">'."\r\n";
-   $line.='<meta name="description" content="Pwa ranking according to the lighthouse score, lighthouse is the the tool present in google chrome to audit web apps." />'."\r\n";
-   $line.='<meta name="keywords" content="pwa,directory,rank,lighthouse,google chrome" />'."\r\n";
-   $line.='<meta name="author" content="Hugues Koolsol" />'."\r\n";
-   $line.='<meta name="Content-Language" content="en" />'."\r\n";
-   $line.='<meta name="google" content="notranslate" />'."\r\n";
-   $line.='<meta property="og:title" content="lighthouse score rank for pwa" />'."\r\n";
-   $line.='<meta property="og:description" content="pwa ranking according to the lighthouse score, lighthouse is the the tool present in google chrome to audit web apps." />'."\r\n";
-   $line.='<meta property="og:type" content="website" />'."\r\n";
-   $line.='<meta property="og:site_name" content="www.mypitself.com">'."\r\n";
+   $listePourBlog.='<p>Dernière mise à jour le '.date('d/m/Y').'</p>'."\r\n";
+   $listePourBlog.='<table class="tableResult1">' ."\r\n";
+   $listePourBlog.='<tr class="hid1">' ."\r\n";
+   $listePourBlog.='<th>apps</th>' ."\r\n";
+   $listePourBlog.='<th>class. | score</th>' ."\r\n";
+   $listePourBlog.='<th style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />b-pra.|seo</th>' ."\r\n";
+   $listePourBlog.='<th style="font-size:0.8em;">prem.<br />affich.</th>' ."\r\n";
+   $listePourBlog.='</tr>' ."\r\n";
    
-   $line.='<style type="text/css">'."\r\n";
-   $line.=' body{font-family:arial;font-size:16px;box-sizing: border-box;margin: 0;padding: 0;font-color:#333;}'."\r\n";
-   $line.=' h1{text-align:center;}'."\r\n";
-   $line.=' table{border:1px #ddd solid;border-collapse: collapse;}'."\r\n";
-   $line.=' td{text-align:center;border:1px #ddd solid;}'."\r\n";
-   $line.=' td.centered{text-align:center;}'."\r\n";
-   $line.=' a.l1,a.l1:visited{color:#444;background:#fefefe;display:inline-block;padding:2px;border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;text-decoration:none;margin-top:3px;}'."\r\n";
-   $line.=' img{border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;}'."\r\n";
-   $line.=' p{margin:15px auto;text-align:justify;padding:3px;max-width:600px;line-height:1.5em;}'."\r\n";
-   $line.=' .tableResult1{max-width:540px;margin:5px auto;}'."\r\n";
-   $line.='@media screen and (max-width: 500px){/* todo adjust size */'."\r\n";
-   $line.=' table.tableResult1{border: 0;margin:5px 5px 5px 5px;}'."\r\n";
-   $line.=' table.tableResult1 thead{border:none;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}'."\r\n";
-   $line.=' table.tableResult1 tr{border-bottom:3px solid #eee;display:block;margin-bottom:2.001em;}'."\r\n";
-   $line.=' table.tableResult1 td{border-bottom:1px solid #eee;display:block;text-align:right!important;min-height:30px;}'."\r\n";
-   $line.=' table.tableResult1 td:before{content:attr(data-label);font-weight:bold;margin:5px 5px;padding-left: 15px;float:left;}'."\r\n";
-   $line.=' table.tableResult1 td:last-child{border-bottom:3px red solid;}'."\r\n";
-   $line.=' table.tableResult1 td:first-child{border-top:3px red solid;padding:5px;}'."\r\n";
-   $line.=' table.tableResult1 td.actionColumn div{display:contents;}'."\r\n";
-   $line.=' table.tableResult1 td.actionColumn{height:auto;}'."\r\n";
-   $line.=' .tableResult1 td {height:auto;}'."\r\n";
-   $line.=' .hs1{visibility:hidden;}'."\r\n";
-   $line.=' .hs1:before{content:"hello";}'."\r\n";
-   $line.=' .hid1 th{display:none;}'."\r\n";
-   $line.=' table.insidet1 td:before{font-weight:bold;margin:5px 5px;padding-left: 15px;float:left;}'."\r\n";
-   $line.=' .br2{line-height:2em;}'."\r\n";
-   $line.='}'."\r\n";
-   $line.='</style>'."\r\n";
-
-   $line.='</head>' ."\r\n";
-   $line.='<body>' ."\r\n";
-   $line.='<h1>lighthouse score rank for some pwa that I like !</h1>' ."\r\n";
-   $line.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
-   $line.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, time for first paint makes the difference<p>' ."\r\n";
-   $line.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
-   $line.='<p>The pwas on the top of the list below have a 100 for all lighthouse scores : pwa, performance, accessibility, best-practice and seo . It is not very easy to get a 100 for all these scores but some can reach this challenge 💪 :-)</p>' ."\r\n";
-   $line.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";
-   $line.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
-   $line.='<table class="tableResult1">' ."\r\n";
-   $line.='<tr class="hid1">' ."\r\n";
-   $line.='<th>apps ('.sizeof($lesManifestsEtUrls).')</th>' ."\r\n";
-   $line.='<th>rank | score</th>' ."\r\n";
-   $line.='<th style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
-   $line.='<th style="font-size:0.8em;">first <br />paint</th>' ."\r\n";
-   $line.='</tr>' ."\r\n";
-   fwrite($fd,$line);
+   
    $rank=0;
    $rankGlobal=0;
    $scorePrec=0;
    foreach($lesManifestsEtUrls as $k1=> $v1){
+    $lisPoBlg1='';
 //    echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $v1['firstContentfulPaint'] , true ) . '</pre>' ; exit(0);
     if($v1['firstContentfulPaint']<10000){
 
      $manifestContent=isset($v1['manifestContent'])?$v1['manifestContent']:'';
      $jsonMan=json_decode($manifestContent,true);
-     $icon='';
+
+     $manifestIcon='';
      if(!is_null($jsonMan)){
       foreach($jsonMan['icons'] as $k2 => $v2){
-       if($icon==''){
+       if($manifestIcon==''){
         $sizes=$v2['sizes'];
         if($sizes=='16x16'){
          
         }else{
-         $icon=$v2['src'];
-         if(substr($icon,0,1) == '/'){ //$v1['url'])
+         $manifestIcon=$v2['src'];
+         if(substr($manifestIcon,0,1) == '/'){ //$v1['url'])
           $pos1=strpos($v1['curlinfo2']['url'],'/',8);
           if($pos1!==false){
-           $icon=substr($v1['curlinfo2']['url'],0,$pos1).$icon;
+           $manifestIcon=substr($v1['curlinfo2']['url'],0,$pos1).$manifestIcon;
           }
-         }else if(substr($icon,0,8) == 'https://'){
-          $icon=$icon;
+         }else if(substr($manifestIcon,0,8) == 'https://'){
+          $manifestIcon=$manifestIcon;
          }else{
           $pos1=strrpos($v1['curlinfo2']['url'],'/');
           if($pos1!==false){
-           $icon=substr($v1['curlinfo2']['url'],0,$pos1).'/'.$icon;
+           $manifestIcon=substr($v1['curlinfo2']['url'],0,$pos1).'/'.$manifestIcon;
           }       
          }
         }
        }
       }
      }
+     $lesManifestsEtUrls[$k1]['manifestIconData']='';
+     $lesManifestsEtUrls[$k1]['manifestIconType']='';
      
-     if($icon==''){
+     if($manifestIcon==''){
      }else{
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_HEADER         , 0);
-      curl_setopt($ch, CURLOPT_URL            , $icon );
+      curl_setopt($ch, CURLOPT_URL            , $manifestIcon );
       curl_setopt($ch, CURLOPT_HEADER         , 0);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1);
       curl_setopt($ch, CURLOPT_TIMEOUT        , 5);
@@ -750,13 +716,16 @@ if(sizeof($lesManifestsEtUrls)>0){
       curl_setopt($ch, CURLOPT_ENCODING       , ''); // avoid gzip format
       curl_setopt($ch, CURLOPT_FOLLOWLOCATION , true); // redirect
       $dataFav=curl_exec($ch);
-      $curlinfo0=curl_getinfo($ch);
+      $curlinfo3=curl_getinfo($ch);
       curl_close($ch);
-      if(!isset($curlinfo0['http_code']) || $curlinfo0['http_code']!=200){
-       $icon='';
+      if(!isset($curlinfo3['http_code']) || $curlinfo3['http_code']!=200 && isset($curlinfo3['content_type']) && $curlinfo3['content_type']!='text/html' && $curlinfo3['download_content_length']>50){
+       $manifestIcon='';
+      }else{
+       $lesManifestsEtUrls[$k1]['manifestIconData']=base64_encode($dataFav);
+       $lesManifestsEtUrls[$k1]['manifestIconType']=(strpos($manifestIcon,'.png')!==false?'png':(strpos($manifestIcon,'.gif')!==false?'gif':(strpos($manifestIcon,'.jpg')!==false?'jpg':(strpos($manifestIcon,'.ico')!==false?'ico':''))));
       }
-      
      }
+
      $score=substr($v1['global-score'],0,6);
      $rankGlobal++;
      if($scorePrec!=$score){
@@ -780,46 +749,130 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
      
      $theLinkTitle=(isset($jsonMan['description'])&&$jsonMan['description']!=''?htmlentities($jsonMan['description'],ENT_COMPAT,'UTF-8'):(isset($v1['descriptionHtml'])?htmlentities($v1['descriptionHtml'],ENT_COMPAT,'UTF-8'):''));
+     $theLinkTitle=html_entity_decode($theLinkTitle,ENT_COMPAT , 'utf-8');
+
+     if(mb_strlen($theLinkTitle)>30){
+      $theLinkTitle=mb_substr($theLinkTitle,0,30,'UTF-8').'...';
+     }
      
-     $line="\r\n\r\n\r\n".' <tr>'."\r\n" .
+     $theLinkTitle=htmlentities($theLinkTitle,ENT_COMPAT,'UTF-8');
+     $theLinkTitle=htmlentities($theLinkTitle,ENT_COMPAT,'UTF-8');
+     $theLinkTitle=str_replace( '&nbsp;',' ', $theLinkTitle );
+
+     
+     $tt1="\r\n\r\n\r\n".' <tr>'."\r\n" .
       '  <td data-label="" class="centered" style="background:'.(isset($jsonMan['theme_color'])?$jsonMan['theme_color']:'#ffffff').';'.$theBorderColor.'">'. "\r\n" .
       '   <div style="display:flex;">'. "\r\n" .
       '    <div style="display:block;width:51px;border:0;">'."\r\n" ;
+     $line.=$tt1;
+     $lisPoBlg1.=$tt1;
+     
+     // 'https://www.koolsol.com/highres-icon-4.png'
+     
+/*     
+     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $icon , true ) . '</pre>' ; exit(0);
      if($icon!=''){
-      $line.=''.
-       '     <a target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
-       '     '.($icon!=''?'<img src="'.$icon.'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />':'') .
+      $tt1=''.
+       '     <a  target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
+       '     '.('<img src="'.$icon.'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />') .
        '     </a>'. "\r\n" ;
+      $line.=$tt1;
+      $nomImage=md5($icon).(strpos($icon,'.ico')!==false?'.ico':(strpos($icon,'.png')!==false?'.png':''));
+      $tt2=''.
+       '     <a  target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
+       '     '.('<img src="'.$icon.'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />') .
+       '     </a>'. "\r\n" ;
+      $lisPoBlg1.=$tt2;
      }else{
+//      echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( __LINE__ , true ) . '</pre>' ; exit(0);
       if($v1['htmlicon']!=''){
-      $line.=''.
-       '     <a target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
-       '     '.'<img src="'.$v1['htmlicon'].'" height="48" width="48"  loading="lazy" alt="'.$theLinkTitle.'" />' .
-       '     </a>'. "\r\n" ;      
+       if(strpos($v1['htmlicon'],'data:image')!==false){
+        $v1['htmlicon']=substr($v1['htmlicon'],strpos($v1['htmlicon'],'data:image'));
+       }
+       $tt1=''.
+        '     <a target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
+        '     '.'<img src="'.$v1['htmlicon'].'" height="48" width="48"  loading="lazy" alt="'.$theLinkTitle.'" />' .
+        '     </a>'. "\r\n" ;      
+       $line.=$tt1;
+       $lisPoBlg1.=$tt1;
+        
       }
       
      }
-     $line.=''.
+     
+*/
+/*
+   'base64icon'      => base64_encode($dataFav),
+   'typeIcone'       => $typeIcone
+   // data:image/png;base64,
+*/
+     if($lesManifestsEtUrls[$k1]['manifestIconType']==''){
+      if(strpos($v1['htmlicon'],'data:image')!==false){
+       $v1['htmlicon']=substr($v1['htmlicon'],strpos($v1['htmlicon'],'data:image'));
+       $tt1=''.
+        '     <a  target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
+        '<img src="data:image/'.$v1['htmlicon'].'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />' .
+        '</a>'. "\r\n" ;
+      }else{
+       $tt1=''.
+        '     <a  target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
+        '<img src="data:image/'.$v1['typeIcone'].';base64,'.$v1['base64icon'].'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />' .
+        '</a>'. "\r\n" ;
+      }
+     }else{
+      $tt1=''.
+       '     <a  target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.
+       '<img src="data:image/'.$lesManifestsEtUrls[$k1]['manifestIconType'].';base64,'.$lesManifestsEtUrls[$k1]['manifestIconData'].'" height="48" width="48" loading="lazy" alt="'.$theLinkTitle.'" />' .
+       '</a>'. "\r\n" ;
+     }
+     $line.=$tt1;
+     $lisPoBlg1.=$tt1;
+     
+     $tt1=''.
       '    </div>'. "\r\n" .
       '    <div style="text-align:center;border:0;margin-left:2px;">'."\r\n" ;
-     if(isset($v1['title'])){
-      $line.=''.
-        '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.(trim($v1['title'])==''?htmlentities($v1['titleHtml']):htmlentities($v1['title'])).'</a>'."\r\n";
-      
-     }else{
-      $line.=''.
-        '    <a class="l1" target="_blank" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']).'</a>'."\r\n";
+     $line.=$tt1;
+     $lisPoBlg1.=$tt1;
+//     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $v1 , true ) . '</pre>' ; exit(0);
+     $title=isset($v1['title'])?(trim($v1['title'])==''?htmlentities($v1['titleHtml']):htmlentities($v1['title'])):(isset($jsonMan['name'])?$jsonMan['name']:$v1['url']);
+     $title=html_entity_decode($title,ENT_COMPAT , 'utf-8');
+     $title=html_entity_decode($title,ENT_COMPAT , 'utf-8');
+     $title=str_replace( '&nbsp',' ', $title );
+     if(mb_strlen($title)>30){
+      $title=mb_substr($title,0,30,'UTF-8').'...';
      }
-     $line.=''.
+     $title=htmlentities($title,ENT_COMPAT,'UTF-8');
+     $title=str_replace( '&nbsp;',' ', $title );
+     
+     $tt1='<a class="l1" target="_blank" rel="noopener" href="'.$v1['url'].'" title="'.$theLinkTitle.'">'.$title.'</a>'."\r\n";
+     $line.=$tt1;
+     $lisPoBlg1.=$tt1;
+
+     $tt1=''.
       '    </div>'."\r\n".
       '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
       '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
-      '  <td data-label="scores : pwa , perf , accessi , bst-pract. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
+      '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
       '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
       '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
       '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
       '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
       '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               ;
+     $line.=$tt1;
+
+     $tt2=''.
+      '    </div>'."\r\n".
+      '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
+      '  <td data-label="class. | score : " class="centered" style="text-align:center;background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
+      '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
+      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
+      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
+      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
+      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
+      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               ;
+     
+     
+     $lisPoBlg1.=$tt2;
      $shortUrl=$v1['url'];
      if(strpos($shortUrl,'https://')!==false){
       $shortUrl=substr($shortUrl,8);
@@ -828,23 +881,99 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
      $shortUrl=substr($shortUrl,0,strpos($shortUrl,'/'));
       
-     $line.=''.
+     $tt1=''.
       '<br class="br2" />'.(isset($v1['curlinfo2']['url'])?'<a style="display:inline-block;margin:3px auto;font-size:0.6em;" class="l1" target="_blank" href="'.$v1['curlinfo2']['url'].'" style="float:right;" >manifest '.$shortUrl.'</a>':'<span style="font-size:0.6em;">'.$shortUrl.'').'</span>' .
       ''.'</td>' ."\r\n";
  //    $line.='  <td data-label="curl total time" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
-     $line.='  <td data-label="first paint" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
+     $line.=$tt1;
+     $lisPoBlg1.=$tt1;
+     $tt1='  <td data-label="first paint" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
+     $tt2='  <td data-label="prem. affich" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
+     $line.=$tt1;
+     $lisPoBlg1.=$tt2;
      
-     $line.="\r\n </tr>\r\n" ;
+     $tt1="\r\n </tr>\r\n" ;
+     $line.=$tt1;
+     $lisPoBlg1.=$tt1;
      
 //     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $line , true ) . '</pre>' ; exit(0);
      
-     fwrite($fd,$line);
+     
+     if($v1['pwa-score']>='0.80'){ // seules les pwa >= 80 sont acceptées pour le blog
+      $listePourBlog.=$lisPoBlg1;
+     }
     }
    }
-   $line= '</table>'."\r\n";  
-   fwrite($fd,$line);
+   $listePourBlog.= '</table>'."\r\n";
+   $line.= '</table>'."\r\n";  
    
+   $entete='';
+   $entete.='<!DOCTYPE html>'."\r\n";
+   $entete.='<html lang="en">'."\r\n";
+   $entete.='<head>'."\r\n";
+   $entete.='<meta charset="utf-8">'."\r\n";
+   $entete.='<title>lighthouse score rank for pwa</title>'."\r\n";
+   $entete.='<meta name="mobile-web-app-capable" content="yes" />'."\r\n";
+   $entete.='<meta name="viewport" content="width=device-width, initial-scale=1">'."\r\n";
+   $entete.='<meta name="description" content="Pwa ranking according to the lighthouse score, lighthouse is the the tool present in google chrome to audit web apps." />'."\r\n";
+   $entete.='<meta name="keywords" content="pwa,directory,rank,lighthouse,google chrome" />'."\r\n";
+   $entete.='<meta name="author" content="Hugues Koolsol" />'."\r\n";
+   $entete.='<meta name="Content-Language" content="en" />'."\r\n";
+   $entete.='<meta name="google" content="notranslate" />'."\r\n";
+   $entete.='<meta property="og:title" content="lighthouse score rank for pwa" />'."\r\n";
+   $entete.='<meta property="og:description" content="pwa ranking according to the lighthouse score, lighthouse is the the tool present in google chrome to audit web apps." />'."\r\n";
+   $entete.='<meta property="og:type" content="website" />'."\r\n";
+   $entete.='<meta property="og:site_name" content="www.mypitself.com">'."\r\n";
    
+   $entete.='<style type="text/css">'."\r\n";
+   $entete.=' body{font-family:arial;font-size:16px;box-sizing: border-box;margin: 0;padding: 0;font-color:#333;}'."\r\n";
+   $entete.=' h1{text-align:center;}'."\r\n";
+   $entete.=' table{border:1px #ddd solid;border-collapse: collapse;}'."\r\n";
+   $entete.=' td{text-align:center;border:1px #ddd solid;}'."\r\n";
+   $entete.=' td.centered{text-align:center;}'."\r\n";
+   $entete.=' a.l1,a.l1:visited{color:#444;background:#fefefe;display:inline-block;padding:2px;border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;text-decoration:none;margin-top:3px;}'."\r\n";
+   $entete.=' img{border:0;box-shadow: 2px 2px 2px #222;border-radius:3px;}'."\r\n";
+   $entete.=' p{margin:15px auto;text-align:justify;padding:3px;max-width:600px;line-height:1.5em;}'."\r\n";
+   $entete.=' .tableResult1{max-width:540px;margin:5px auto;}'."\r\n";
+   $entete.='@media screen and (max-width: 500px){/* todo adjust size */'."\r\n";
+   $entete.=' table.tableResult1{border: 0;margin:5px 5px 5px 5px;}'."\r\n";
+   $entete.=' table.tableResult1 thead{border:none;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}'."\r\n";
+   $entete.=' table.tableResult1 tr{border-bottom:3px solid #eee;display:block;margin-bottom:2.001em;}'."\r\n";
+   $entete.=' table.tableResult1 td{border-bottom:1px solid #eee;display:block;text-align:right!important;min-height:30px;}'."\r\n";
+   $entete.=' table.tableResult1 td:before{content:attr(data-label);font-weight:bold;margin:5px 5px;padding-left: 15px;float:left;}'."\r\n";
+   $entete.=' table.tableResult1 td:last-child{border-bottom:3px red solid;}'."\r\n";
+   $entete.=' table.tableResult1 td:first-child{border-top:3px red solid;padding:5px;}'."\r\n";
+   $entete.=' table.tableResult1 td.actionColumn div{display:contents;}'."\r\n";
+   $entete.=' table.tableResult1 td.actionColumn{height:auto;}'."\r\n";
+   $entete.=' .tableResult1 td {height:auto;}'."\r\n";
+   $entete.=' .hs1{visibility:hidden;}'."\r\n";
+   $entete.=' .hs1:before{content:"hello";}'."\r\n";
+   $entete.=' .hid1 th{display:none;}'."\r\n";
+   $entete.=' table.insidet1 td:before{font-weight:bold;margin:5px 5px;padding-left: 15px;float:left;}'."\r\n";
+   $entete.=' .br2{line-height:2em;}'."\r\n";
+   $entete.='}'."\r\n";
+   $entete.='</style>'."\r\n";
+
+   $entete.='</head>' ."\r\n";
+   $entete.='<body>' ."\r\n";
+   $entete.='<h1>lighthouse score rank for some pwa that I like !</h1>' ."\r\n";
+   $entete.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
+   $entete.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, time for first paint makes the difference<p>' ."\r\n";
+   $entete.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
+   $entete.='<p>The pwas on the top of the list below have a 100 for all lighthouse scores : pwa, performance, accessibility, best-practice and seo . It is not very easy to get a 100 for all these scores but some can reach this challenge 💪 :-)</p>' ."\r\n";
+   $entete.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";
+   $entete.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
+   $entete.='<table class="tableResult1">' ."\r\n";
+   $entete.='<tr class="hid1">' ."\r\n";
+   $entete.='<th>apps ('.sizeof($lesManifestsEtUrls).')</th>' ."\r\n";
+   $entete.='<th>rank | score</th>' ."\r\n";
+   $entete.='<th style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
+   $entete.='<th style="font-size:0.8em;">first <br />paint</th>' ."\r\n";
+   $entete.='</tr>' ."\r\n";
+
+   fwrite($fd,$entete.$line);
+   
+   $line='';
    $line.='<p>'."\r\n";
    $line.='I did koolsol because I wanted a fast and simple solitaire card game with solutions for the players around the world with translations in 27 languages. I am disapointed by the rank Google gives to it because I applied all the requirements ( pwa, offline and online, fast ...) and it is far from being on the first page when one search for solitaire game. Why ?'."\r\n";
    $line.='</p>'."\r\n";
@@ -856,7 +985,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<br />Why ? :-).'."\r\n";
    $line.='</p>'."\r\n";
    
-   $line.='<p>Do not forget to play koolsol and, please, share it ;-) <a target="_blank" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
+   $line.='<p>Do not forget to play koolsol and, please, share it ;-) <a  target="_blank" rel="noopener" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
    fwrite($fd,$line);
    
    @include('lighthouse-write-google-tag.php'); // optional : writes the google analytics code at the end of the file ( see the source genetated at the end of this page : http://www.mypitself.com/lighthouse-score-rank-for-pwa.html)
@@ -864,6 +993,9 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line= '</body>' ."\r\n";  fwrite($fd,$line);
    $line= '</html>' ."\r\n";  fwrite($fd,$line);
    fclose($fd);
+  }
+  if($fd=fopen($dir.'/'.'lighthouse-for-blog.txt','w')){
+   fwrite($fd,$listePourBlog);
   }
       
   // ====================================================
@@ -877,6 +1009,14 @@ if(sizeof($lesManifestsEtUrls)>0){
  
  }
 }
+
+if($fdlesManifestsEtUrls=fopen('lesManifestsEtUrls.php','w')){ 
+ fwrite($fdlesManifestsEtUrls, '<'.'?php'."\r\n".'$lesManifestsEtUrls=' . var_export( $lesManifestsEtUrls,true ) .';' ); 
+ fclose($fdlesManifestsEtUrls); 
+}
+
+
+
 echo "Good job!, Now I go for a 10 minutes nap to see the logs";
 sleep(600);
 

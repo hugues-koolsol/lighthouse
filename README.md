@@ -10,5 +10,7 @@ It is not very easy to get a 100 for all these scores but some can reach this ch
 
 See the result here : http://www.mypitself.com/lighthouse-score-rank-for-pwa.html
 
+or there : https://blog.koolsol.app/article-classement-lighthouse.php
+
 Do not forget to play koolsol ;-) https://www.koolsol.com/
 

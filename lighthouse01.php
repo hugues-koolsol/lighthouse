@@ -37,7 +37,6 @@ $urls=array(  // the apps I like :-)
  'https://pwa-directory.appspot.com/',
  'https://appsco.pe/',
  'https://pwa-store.firebaseapp.com/',
- 'https://airhorner.com/',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://grrd01.github.io/Dice/index.html',
@@ -73,6 +72,7 @@ $urls=array(  // the apps I like :-)
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
  
+// 'https://airhorner.com/', // lighthouse audit bug
 // 'https://gameclock.app/#/', // does not exist anymore
 // 'https://tldr.hackeryogi.com', // manifest file not founded for url
 // 'https://outweb.io/', // does not exist anymore
@@ -653,7 +653,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $count++;
    $line='';
    
-   $listePourBlog.='<p>Dernière mise à jour le '.date('d/m/Y').'</p>'."\r\n";
+   $listePourBlog.='<p>Dernière mise à jour le '.date('d/m/Y').' avec lighthouse 6.0.0</p>'."\r\n";
    $listePourBlog.='<table class="tableResult1">' ."\r\n";
    $listePourBlog.='<tr class="hid1">' ."\r\n";
    $listePourBlog.='<th>apps</th>' ."\r\n";
@@ -962,7 +962,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $entete.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
    $entete.='<p>The pwas on the top of the list below have a 100 for all lighthouse scores : pwa, performance, accessibility, best-practice and seo . It is not very easy to get a 100 for all these scores but some can reach this challenge 💪 :-)</p>' ."\r\n";
    $entete.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";
-   $entete.='<p>Last update : '.date('Y-m-d').'</p>' ."\r\n";
+   $entete.='<p>Last update : '.date('Y-m-d').' with lighthouse 6.0.0</p>' ."\r\n";
    $entete.='<table class="tableResult1">' ."\r\n";
    $entete.='<tr class="hid1">' ."\r\n";
    $entete.='<th>apps ('.sizeof($lesManifestsEtUrls).')</th>' ."\r\n";

@@ -8,6 +8,7 @@
 // To install lighthouse on your pc, install node then run:
 // npm install -g lighthouse
 
+$lighthouseVersion='6.4.0';
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
@@ -32,7 +33,6 @@ $urls=array(  // the apps I like :-)
  'https://janzbinden.github.io/tictactoe/',
  'https://yelli.com/',
  'https://findpwa.com/',
- 'https://pwapps.co/',
 
  'https://pwa-directory.appspot.com/',
  'https://appsco.pe/',
@@ -40,14 +40,10 @@ $urls=array(  // the apps I like :-)
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://grrd01.github.io/Dice/index.html',
- 'https://maaatch.games/',
  'https://stopwatch-app.com/',
- 'https://minesweeper.now.sh/',
  'https://proxx.app/', // the google proxx does not work on ie and is not so good on lighthouse ( do google teams meet or speak together ? )
  'https://squoosh.app/',
  'https://typing.octet.app/',
- 'https://stammel.net/projekte/sfxr/',
- 'http://appsmartpush.com/',
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',
@@ -65,13 +61,18 @@ $urls=array(  // the apps I like :-)
  'https://www.solitaire-play.com/',
  'https://poki.com/en/g/poki-klondike-solitaire',
  'https://www.gralon.net/jeux-en-ligne/jeu-solitaire.htm',
- 'https://www.vivenoel.com/calendrier/2dec.htm',
  'https://cardgames.io/solitaire/',
  'http://pasjans-online.pl/',
  'http://www.mathster.com/games/solitaire/',
  'http://solitaires-online.com/',
  'http://www.10001games.fr/jeu/klondike-solitaire',
  
+// 'https://maaatch.games/', // KO
+// 'https://www.vivenoel.com/calendrier/2dec.htm', // image KO
+// 'https://stammel.net/projekte/sfxr/', // Runtime error encountered:
+// 'https://minesweeper.now.sh/', // ne fonctionne plus
+// 'https://pwapps.co/', // ne fonctionne plus
+// 'http://appsmartpush.com/', // n'existe plus
 // 'https://airhorner.com/', // lighthouse audit bug
 // 'https://gameclock.app/#/', // does not exist anymore
 // 'https://tldr.hackeryogi.com', // manifest file not founded for url
@@ -102,9 +103,8 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the array of urls
 $urls=array(  
- 'https://maaatch.games/',
  'https://www.koolsol.com/',
- 'https://memory.koolsol.app/',
+// 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',
 // 'https://grrd01.github.io/4inaRow/index.html',
 // 'https://www.koolsol.com/',
@@ -452,8 +452,11 @@ foreach( $urls as $k1 => $v1){
    // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
    // C:\Users\user1\AppData\Roaming\npm\lighthouse.cmd https://www.google.com/logos/fnbx/solitaire/standalone.html  --throttling.rttMs --max-wait-for-load 5000 --skip-audits errors-in-console --quiet --output json >https%3A%2F%2Fwww.google.com%2Flogos%2Ffnbx%2Fsolitaire%2Fstandalone.html.lighthouse.json
    
-   
-   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+//   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+   // https://github.com/GoogleChrome/lighthouse#cli-options
+//   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --emulated-form-factor=desktop --throttling-method=simulate  --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+//   echo __LINE__ . ' ' . $cmd1 . "\r\n";
    
 
    passthru($cmd1); // run it !
@@ -495,8 +498,10 @@ foreach( $urls as $k1 => $v1){
   // launch lighthouse : adjust the path to reach thr lighthouse.cmd
   // --skip-audits errors-in-console : skip errors in console because if you have a google analytics or a google adsense, some errors are logged, even if they are google products !!!!
   // --max-wait-for-load 3000        : after 3 seconds, abort !!
-  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
-  
+  //$cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+  // $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless"                    --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+
   passthru($cmd1); // run it !
 
   $toAdd=array(
@@ -518,11 +523,15 @@ foreach( $urls as $k1 => $v1){
   
   
   $lesManifestsEtUrls[]=$toAdd;
-  usleep(250000); // relax 0.25 second
+  usleep(100000); // relax 0.10 second
   
   
   
  }
+ 
+ 
+ 
+ 
 }
 
 //echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls , true ) . '</pre>' ; exit(0);
@@ -559,13 +568,37 @@ if(sizeof($lesManifestsEtUrls)>0){
   $fichier1=$v1['fichier'];
 //  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $fichier1 , true ) . '</pre>' ; exit(0);
   $datajson=json_decode(file_get_contents($fichier1),true);
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $datajson , true ) . '</pre>' ; exit(0);
   if($datajson!==NULL){
    if(isset($v1['title'])){
     $lesManifestsEtUrls[$k1]['pwa-score']=0;
     $datajson['categories']['pwa']['score']=0;
    }
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $datajson['categories'] , true ) . '</pre>' ; exit(0);
+   
+   
    $lesManifestsEtUrls[$k1]['pwa-score']            =number_format($datajson['categories']['pwa']['score'],2,'.','');
    $lesManifestsEtUrls[$k1]['performance-score']    =number_format($datajson['categories']['performance']['score'],2,'.','');
+   // lh is buggy on performance score so if load time <  200ms, performance id 1 !   
+   $lhbuggyOnPerformance=false;
+   if(is_null($datajson['categories']['performance']['score'])){
+     if($v1['curlinfo1']['total_time']<=0.2){
+       $lesManifestsEtUrls[$k1]['performance-score']='1.00';
+       $datajson['categories']['performance']['score']=1;
+       $lhbuggyOnPerformance=true;
+     }
+//     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $v1 , true ) . '</pre>' ; exit(0);
+   }else{
+    if($datajson['categories']['performance']['score']>=0.95){
+     // lighthouse est un peu irrégulier sur les performances élevées,
+     // en conséquence, j'arrondis quand elles sont bonnes, car on constate visuellement un affichage très rapide
+     // quand la performance est à 0.95 ou plus
+     $datajson['categories']['performance']['score']=1;
+     $lesManifestsEtUrls[$k1]['performance-score']='1.00';
+    }
+   }
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $datajson['categories']['performance']['score'] , true ) . '</pre>' ; exit(0);
+   
    $lesManifestsEtUrls[$k1]['accessibility-score']  =number_format($datajson['categories']['accessibility']['score'],2,'.','');
    $lesManifestsEtUrls[$k1]['best-practices-score'] =number_format($datajson['categories']['best-practices']['score'],2,'.','');
    $lesManifestsEtUrls[$k1]['seo-score']            =number_format($datajson['categories']['seo']['score'],2,'.','');
@@ -575,20 +608,27 @@ if(sizeof($lesManifestsEtUrls)>0){
                                                                     $datajson['categories']['best-practices']['score']*2+         // weight =  2
                                                                     $datajson['categories']['seo']['score']*1)/20 , 5 ,'.','');   // weight =  1
    $lesManifestsEtUrls[$k1]['curl-total_time']      =$v1['curlinfo1']['total_time'];
+//   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls[$k1] , true ) . '</pre>' ; exit(0);
+
    
    $lesManifestsEtUrls[$k1]['firstContentfulPaint']=10000;
-   if(isset($datajson['audits']['metrics']['details']['items'][0])){
-    foreach( $datajson['audits']['metrics']['details']['items'][0] as $kau1 => $vau1){
-     if($kau1==='firstContentfulPaint'){
- //     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $vau1 , true ) . '</pre>' ; exit(0);
-      $lesManifestsEtUrls[$k1]['firstContentfulPaint']=$vau1;
+   if($lhbuggyOnPerformance){
+    $lesManifestsEtUrls[$k1]['firstContentfulPaint']=$v1['curlinfo1']['total_time']*1000;
+   }else{
+    if(isset($datajson['audits']['metrics']['details']['items'][0])){
+     foreach( $datajson['audits']['metrics']['details']['items'][0] as $kau1 => $vau1){
+      if($kau1==='firstContentfulPaint'){
+  //     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $vau1 , true ) . '</pre>' ; exit(0);
+       $lesManifestsEtUrls[$k1]['firstContentfulPaint']=$vau1;
+      }
      }
     }
    }
 //   echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $datajson['audits']['metrics']['details']['items'] , true ) . '</pre>' ; exit(0);
   }else{
    echo __FILE__ . ' ' . __LINE__ . ' json incorrect pour = ' . $fichier1 . "\r\n" ; 
-  }   
+  }
+//  echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $lesManifestsEtUrls[$k1] , true ) . '</pre>' ; exit(0);
  }
 // echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( __LINE__ , true ) . '</pre>' ; exit(0);
  foreach( $lesManifestsEtUrls as $k1 => $v1 ){
@@ -653,13 +693,13 @@ if(sizeof($lesManifestsEtUrls)>0){
    $count++;
    $line='';
    
-   $listePourBlog.='<p>Dernière mise à jour le '.date('d/m/Y').' avec lighthouse 6.0.0</p>'."\r\n";
+   $listePourBlog.='<p>Dernière mise à jour le '.date('d/m/Y').' avec lighthouse '.$lighthouseVersion.'</p>'."\r\n";
    $listePourBlog.='<table class="tableResult1">' ."\r\n";
    $listePourBlog.='<tr class="hid1">' ."\r\n";
    $listePourBlog.='<th>apps</th>' ."\r\n";
    $listePourBlog.='<th>class. | score</th>' ."\r\n";
    $listePourBlog.='<th style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />b-pra.|seo</th>' ."\r\n";
-   $listePourBlog.='<th style="font-size:0.8em;">prem.<br />affich.</th>' ."\r\n";
+   $listePourBlog.='<th style="font-size:0.8em;" title="Premier affichage ou bien temps de chargement de la page">prem.<br />affich.</th>' ."\r\n";
    $listePourBlog.='</tr>' ."\r\n";
    
    
@@ -962,13 +1002,13 @@ if(sizeof($lesManifestsEtUrls)>0){
    $entete.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
    $entete.='<p>The pwas on the top of the list below have a 100 for all lighthouse scores : pwa, performance, accessibility, best-practice and seo . It is not very easy to get a 100 for all these scores but some can reach this challenge 💪 :-)</p>' ."\r\n";
    $entete.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";
-   $entete.='<p>Last update : '.date('Y-m-d').' with lighthouse 6.0.0</p>' ."\r\n";
+   $entete.='<p>Last update : '.date('Y-m-d').' with lighthouse '.$lighthouseVersion.'</p>' ."\r\n";
    $entete.='<table class="tableResult1">' ."\r\n";
    $entete.='<tr class="hid1">' ."\r\n";
    $entete.='<th>apps ('.sizeof($lesManifestsEtUrls).')</th>' ."\r\n";
    $entete.='<th>rank | score</th>' ."\r\n";
    $entete.='<th style="max-width:50%;font-size:0.8em;">pwa|perf.|accessi.<br />bst-practi.|seo</th>' ."\r\n";
-   $entete.='<th style="font-size:0.8em;">first <br />paint</th>' ."\r\n";
+   $entete.='<th style="font-size:0.8em;"  title="First paint ( if lh is not buggy ) or loading time">first <br />paint</th>' ."\r\n";
    $entete.='</tr>' ."\r\n";
 
    fwrite($fd,$entete.$line);

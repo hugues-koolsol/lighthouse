@@ -6,9 +6,9 @@
 // it will create a out1.csv                            
 // it will create a lighthouse-score-rank-for-pwa.html  
 // To install lighthouse on your pc, install node then run:
-// npm install -g lighthouse
+// npm install -g lighthouse # see there : https://github.com/GoogleChrome/lighthouse
 
-$lighthouseVersion='6.4.0';
+$lighthouseVersion='7.4.0';
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
@@ -25,25 +25,20 @@ $urls=array(  // the apps I like :-)
  'https://grrd01.github.io/TicTacToe/index.html',
  'https://calculator.iondrimbafilho.me/',
  'https://www.timroes.de/'     ,   // 100
- 'https://tcg.loke.dev/?standalone=true',
  'https://rotavo-pwa.firebaseapp.com/',
  'https://rgbtohex.samdlc.com/',
  'https://mastermind.jull.dev/',
  'https://sudoku.jull.dev/',
  'https://janzbinden.github.io/tictactoe/',
- 'https://yelli.com/',
  'https://findpwa.com/',
 
- 'https://pwa-directory.appspot.com/',
  'https://appsco.pe/',
- 'https://pwa-store.firebaseapp.com/',
  'https://grrd01.github.io/4inaRow/index.html',
  'https://grrd01.github.io/Puzzle/index.html',
  'https://grrd01.github.io/Dice/index.html',
  'https://stopwatch-app.com/',
  'https://proxx.app/', // the google proxx does not work on ie and is not so good on lighthouse ( do google teams meet or speak together ? )
  'https://squoosh.app/',
- 'https://typing.octet.app/',
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',
@@ -57,16 +52,25 @@ $urls=array(  // the apps I like :-)
  'https://www.jeu-du-solitaire.com/',
  'https://www.planet.fr/jeu-solitaire',
  'https://www.solitaire-klondike.com/klondike.html',
- 'https://games.aarp.org/games/klondike-solitaire-new', // 
  'https://www.solitaire-play.com/',
  'https://poki.com/en/g/poki-klondike-solitaire',
- 'https://www.gralon.net/jeux-en-ligne/jeu-solitaire.htm',
  'https://cardgames.io/solitaire/',
+ 'https://www.solitaire-with-cards.com/', // 
+ 'https://www.gosolitaire.com/' , // même que le précédent
  'http://pasjans-online.pl/',
- 'http://www.mathster.com/games/solitaire/',
  'http://solitaires-online.com/',
- 'http://www.10001games.fr/jeu/klondike-solitaire',
  
+// 'https://allsolitairegames.com/klondike', // KO lent
+// 'https://typing.octet.app/', // KO
+// 'https://pwa-store.firebaseapp.com/', // peu d'app, ne bouge plus !
+// 'http://www.mathster.com/games/solitaire/', // KO
+// 'http://www.10001games.fr/jeu/klondike-solitaire', // KO
+// 'https://www.gralon.net/jeux-en-ligne/jeu-solitaire.htm', // KO
+// 'https://games.aarp.org/games/klondike-solitaire-new', // KO
+// 'https://pwa-directory.appspot.com/', // KO !!!!!
+// 'http://soli-taire.site/',
+// 'https://yelli.com/', // KO
+// 'https://tcg.loke.dev/?standalone=true', // KO
 // 'https://maaatch.games/', // KO
 // 'https://www.vivenoel.com/calendrier/2dec.htm', // image KO
 // 'https://stammel.net/projekte/sfxr/', // Runtime error encountered:
@@ -98,6 +102,7 @@ $urls=array(  // the apps I like :-)
 // 'http://www.jeusolitaire.fr/jouerausolitaire/solitaire.php', // bad score
 // 'http://games.latimes.com/games/klondike-solitaire/', // bad score same as latimes, lemonde and meteo
 // 'http://www.jeux.fr/jeu/solitaire-classique', // bad score
+// 'http://solitairecorner.com/game/web/klondike-solitaire/klondike-solitaire/', // permet de lancer les cartes 404 !!!
 );
 
 /*
@@ -893,11 +898,11 @@ if(sizeof($lesManifestsEtUrls)>0){
       '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
       '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
       '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
-      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
-      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
-      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
-      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
-      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               ;
+      '<span title="pwa">' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                       . '</span>' .
+      '|<span title="performance">'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       . '</span>' .
+      '|<span title="accessibility">'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))   . '</span>' .
+      '|<span title="best-practices">'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1)) . '</span>' .
+      '|<span title="seo">'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))                       . '</span>' ;
      $line.=$tt1;
 
      $tt2=''.
@@ -905,11 +910,11 @@ if(sizeof($lesManifestsEtUrls)>0){
       '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
       '  <td data-label="class. | score : " class="centered" style="text-align:center;background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
       '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
-      '' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                .
-      '|'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       .
-      '|'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))     .
-      '|'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))    .
-      '|'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))               ;
+      '<span title="pwa">' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                        . '</span>' .
+      '|<span title="performance">'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))        . '</span>' .
+      '|<span title="accessibility">'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))    . '</span>' .
+      '|<span title="best-practices">'.($v1['best-practices-score']=='1.00'?'1':substr($v1['best-practices-score'],1))  . '</span>' .
+      '|<span title="seo">'.($v1['seo-score']           =='1.00'?'1':substr($v1['seo-score'],1))                        . '</span>' ;
      
      
      $lisPoBlg1.=$tt2;
@@ -976,7 +981,7 @@ if(sizeof($lesManifestsEtUrls)>0){
    $entete.=' p{margin:15px auto;text-align:justify;padding:3px;max-width:600px;line-height:1.5em;}'."\r\n";
    $entete.=' .tableResult1{max-width:540px;margin:5px auto;}'."\r\n";
    $entete.='@media screen and (max-width: 500px){/* todo adjust size */'."\r\n";
-   $entete.=' table.tableResult1{border: 0;margin:5px 5px 5px 5px;}'."\r\n";
+   $entete.=' table.tableResult1{border: 0;margin:5px auto 5px auto;}'."\r\n";
    $entete.=' table.tableResult1 thead{border:none;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}'."\r\n";
    $entete.=' table.tableResult1 tr{border-bottom:3px solid #eee;display:block;margin-bottom:2.001em;}'."\r\n";
    $entete.=' table.tableResult1 td{border-bottom:1px solid #eee;display:block;text-align:right!important;min-height:30px;}'."\r\n";
@@ -1020,10 +1025,6 @@ if(sizeof($lesManifestsEtUrls)>0){
    $line.='<p><a target="_blank" href="https://www.nytimes.com/2013/02/24/opinion/sunday/solitaire-me-vs-me.html">Why should you play solitaire game by Francine Prose ?</a></p>'."\r\n";
    $line.='<p><a target="_blank" href="https://www.newyorker.com/magazine/1972/01/22/solitaire-2">A solitaire story by John Updike</a></p>'."\r\n";
    $line.='<p lang="fr"><a href="https://motherboard.vice.com/fr/article/53ygg3/le-jeu-de-solitaire-a-inspire-loutil-mathematique-le-plus-utilise-au-monde">Le jeu de solitaire a inspiré un des outils mathématique le plus utilisé au monde</a></p>'."\r\n";
-   $line.='<p>'."\r\n";
-   $line.='It is quite funny that Google doesn\'t like flash games but when you search some solitaire games in the search engine, many of them are flash game !'."\r\n";
-   $line.='<br />Why ? :-).'."\r\n";
-   $line.='</p>'."\r\n";
    
    $line.='<p>Do not forget to play koolsol and, please, share it ;-) <a  target="_blank" rel="noopener" href="https://www.koolsol.com/">https://www.koolsol.com/</a></p>' ."\r\n";
    fwrite($fd,$line);

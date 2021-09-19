@@ -8,7 +8,7 @@
 // To install lighthouse on your pc, install node then run:
 // npm install -g lighthouse # see there : https://github.com/GoogleChrome/lighthouse
 
-$lighthouseVersion='7.4.0';
+$lighthouseVersion='8.3.0';
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
@@ -109,7 +109,7 @@ $urls=array(  // the apps I like :-)
 // for test only, reduce the array of urls
 $urls=array(  
  'https://www.koolsol.com/',
-// 'https://memory.koolsol.app/',
+ 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',
 // 'https://grrd01.github.io/4inaRow/index.html',
 // 'https://www.koolsol.com/',
@@ -1003,7 +1003,11 @@ if(sizeof($lesManifestsEtUrls)>0){
    $entete.='<body>' ."\r\n";
    $entete.='<h1>lighthouse score rank for some pwa that I like !</h1>' ."\r\n";
    $entete.='<p>Pwa ranking according to the lighthouse score. Lighthouse is the the tool present in google chrome to audit web apps.</p>' ."\r\n";
-   $entete.='<p>The score is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, time for first paint makes the difference<p>' ."\r\n";
+   $entete.='<p>The score here is computed with this formula : 10*pwa + 4*performance + 3*accessibility + 2*best-practices + 1*seo and in case of equality, time for first paint makes the difference<p>' ."\r\n";
+   $entete.='<p>I did set a tolerance for performance for two reasons:<br />' ."\r\n";
+   $entete.='1°) lighthouse is a little inconstant when you exceed a score of 95.<br />' ."\r\n";
+   $entete.='2°) in the case of a pwa, the first loading can be a little slow but the following ones are very fast.<br />' ."\r\n";
+   $entete.='As a result, a score &gt;= 95 is considered to be equal to 100.<p>' ."\r\n";
    $entete.='<p>The php source file that produces this list is here : <a target="_blank" href="https://github.com/hugues-koolsol/lighthouse">https://github.com/hugues-koolsol/lighthouse</a></p>' ."\r\n";
    $entete.='<p>The pwas on the top of the list below have a 100 for all lighthouse scores : pwa, performance, accessibility, best-practice and seo . It is not very easy to get a 100 for all these scores but some can reach this challenge 💪 :-)</p>' ."\r\n";
    $entete.='<p>I like solitaire game so you will find many of them in the list below.</p>' ."\r\n";

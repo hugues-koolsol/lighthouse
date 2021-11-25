@@ -8,7 +8,7 @@
 // To install lighthouse on your pc, install node then run:
 // npm install -g lighthouse # see there : https://github.com/GoogleChrome/lighthouse
 
-$lighthouseVersion='8.3.0';
+$lighthouseVersion='9.1.0';
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
@@ -19,6 +19,7 @@ $urls=array(  // the apps I like :-)
  'https://todo.koolsol.app/',      // ;-)
  'https://syllabes.koolsol.app/',  // ;-)
  'https://www.koolsol.app/',       // ;-)
+ 'https://blog.koolsol.app/',      // ;-)
  'https://www.koolsol.com/',       // ;-) // test to see if .app and .com are different even if it is the same app on the same server.
  'https://minesweeper.koolsol.app/',
  'https://freesolitaire.win/',
@@ -105,17 +106,19 @@ $urls=array(  // the apps I like :-)
 // 'http://solitairecorner.com/game/web/klondike-solitaire/klondike-solitaire/', // permet de lancer les cartes 404 !!!
 );
 
-/*
+
 // for test only, reduce the array of urls
 $urls=array(  
  'https://www.koolsol.com/',
- 'https://memory.koolsol.app/',
+ 'https://blog.koolsol.app/',
+ 'https://todo.koolsol.app/',
+// 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',
 // 'https://grrd01.github.io/4inaRow/index.html',
 // 'https://www.koolsol.com/',
 // 'https://freesolitaire.win/',
 );
-*/
+
 
 
 /*

@@ -106,7 +106,7 @@ $urls=array(  // the apps I like :-)
 // 'http://solitairecorner.com/game/web/klondike-solitaire/klondike-solitaire/', // permet de lancer les cartes 404 !!!
 );
 
-
+/*
 // for test only, reduce the array of urls
 $urls=array(  
  'https://www.koolsol.com/',
@@ -118,7 +118,7 @@ $urls=array(
 // 'https://www.koolsol.com/',
 // 'https://freesolitaire.win/',
 );
-
+*/
 
 
 /*

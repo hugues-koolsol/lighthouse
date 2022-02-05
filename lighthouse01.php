@@ -1,6 +1,6 @@
 <?php
 // run this in a directory with these command lines:
-// cd c:\path_to_lighthouse001.php
+// cd c:\path\lighthouse001.php
 // c:\path_to_php_bin_directory\php.exe -q lighthouse001.php
 // it will create json and html file for each url
 // it will create a out1.csv                            
@@ -8,7 +8,7 @@
 // To install lighthouse on your pc, install node then run:
 // npm install -g lighthouse # see there : https://github.com/GoogleChrome/lighthouse
 
-$lighthouseVersion='9.1.0';
+$lighthouseVersion='9.2.0';
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
@@ -109,9 +109,11 @@ $urls=array(  // the apps I like :-)
 /*
 // for test only, reduce the array of urls
 $urls=array(  
- 'https://www.koolsol.com/',
- 'https://blog.koolsol.app/',
- 'https://todo.koolsol.app/',
+// 'https://www.koolsol.com/',
+// 'https://blog.koolsol.app/',
+// 'https://todo.koolsol.app/',
+ 'https://syllabes.koolsol.app/',  // ;-)
+ 
 // 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',
 // 'https://grrd01.github.io/4inaRow/index.html',
@@ -124,8 +126,10 @@ $urls=array(
 /*
 // these url are suppose to be 100 for pwa-directory
 $urls=array(  
- 'https://memory.koolsol.app/',                // 100 :-) my reference
- 'https://minesweeper.koolsol.app/',
+ 'https://todo.koolsol.app/',                // 100 :-) my reference
+// 'https://minesweeper.koolsol.app/',
+ 'https://www.koolsol.app/',
+ 'https://findpwa.com/',
 // 'https://whatsadd.tools/' ,                 // 99.1
 // 'https://pwatictactoe.web.app/index.html',  // 99.55
 // 'https://hnpwa-vanilla.firebaseapp.com/',   // 97.6
@@ -463,7 +467,8 @@ foreach( $urls as $k1 => $v1){
 //   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
    // https://github.com/GoogleChrome/lighthouse#cli-options
 //   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --emulated-form-factor=desktop --throttling-method=simulate  --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
-   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+//   $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --quiet --max-wait-for-load 3000  --output json >'.$fichier1."\r\n";
+   $cmd1='lighthouse '.$v1.' --chrome-flags="--headless" --quiet --max-wait-for-load 3000  --output json >'.$fichier1."\r\n";
 //   echo __LINE__ . ' ' . $cmd1 . "\r\n";
    
 
@@ -508,7 +513,8 @@ foreach( $urls as $k1 => $v1){
   // --max-wait-for-load 3000        : after 3 seconds, abort !!
   //$cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --throttling.rttMs --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
   // $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless"                    --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
-  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+//  $cmd1='C:\\Users\\user1\\AppData\\Roaming\\npm\\lighthouse.cmd '.$v1.' --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
+  $cmd1='lighthouse '.$v1.' --chrome-flags="--headless" --max-wait-for-load 3000 --quiet --output json >'.$fichier1."\r\n";
 
   passthru($cmd1); // run it !
 

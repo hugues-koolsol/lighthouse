@@ -22,6 +22,7 @@ $urls=array(  // the apps I like :-)
  'https://blog.koolsol.app/',      // ;-)
  'https://www.koolsol.com/',       // ;-) // test to see if .app and .com are different even if it is the same app on the same server.
  'https://minesweeper.koolsol.app/',
+ 'https://svg.koolsol.app/',
  'https://freesolitaire.win/',
  'https://grrd01.github.io/TicTacToe/index.html',
  'https://calculator.iondrimbafilho.me/',
@@ -111,8 +112,9 @@ $urls=array(  // the apps I like :-)
 $urls=array(  
 // 'https://www.koolsol.com/',
 // 'https://blog.koolsol.app/',
-// 'https://todo.koolsol.app/',
- 'https://syllabes.koolsol.app/',  // ;-)
+ 'https://todo.koolsol.app/',
+// 'https://syllabes.koolsol.app/',  // ;-)
+ 'https://svg.koolsol.app/',
  
 // 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',

@@ -8,12 +8,17 @@
 // To install lighthouse on your pc, install node then run:
 // npm install -g lighthouse # see there : https://github.com/GoogleChrome/lighthouse
 
-$lighthouseVersion='9.2.0';
+/*
+A partir de la version 12 il n'y a plus de score pwa
+ce qui retire tout l'interêt à lighthouse ......
+*/
+$lighthouseVersion='11.7.1';
 
 // for the ones commented, the manifest file has non been founded
 $urls=array(  // the apps I like :-)
  
  // the best lighthouse scores first
+ 'https://samegame.koolsol.app/',    // ;-)
  'https://memory.koolsol.app/',    // ;-)
  'https://sudoku.koolsol.app/',    // ;-)
  'https://todo.koolsol.app/',      // ;-)
@@ -33,6 +38,7 @@ $urls=array(  // the apps I like :-)
  'https://sudoku.jull.dev/',
  'https://janzbinden.github.io/tictactoe/',
  'https://findpwa.com/',
+ 'https://www.pwalist.app/',
 
  'https://appsco.pe/',
  'https://grrd01.github.io/4inaRow/index.html',
@@ -40,13 +46,11 @@ $urls=array(  // the apps I like :-)
  'https://grrd01.github.io/Dice/index.html',
  'https://stopwatch-app.com/',
  'https://proxx.app/', // the google proxx does not work on ie and is not so good on lighthouse ( do google teams meet or speak together ? )
- 'https://squoosh.app/',
 
  // 100% on pwa-directory to check
  'https://www.climasurgba.com.ar/menu',
  'https://cloudfour.com/',
  'https://www.valor-dolar.cl/',
- 'https://www.mankier.com/',
  
  // I like solitaire games but many of them are not pwas and I think games should have an offline mode.
  'https://www.solitaire-web-app.com/',
@@ -62,6 +66,8 @@ $urls=array(  // the apps I like :-)
  'http://pasjans-online.pl/',
  'http://solitaires-online.com/',
  
+// 'https://www.mankier.com/', // Runtime error encountered: Something went wrong with recording the trace over your page load. Please run Lighthouse again. (NO_NAVSTART)
+// 'https://squoosh.app/', //  Runtime error encountered: Something went wrong with recording the trace over your page load. Please run Lighthouse again. (NO_NAVSTART)
 // 'https://allsolitairegames.com/klondike', // KO lent
 // 'https://typing.octet.app/', // KO
 // 'https://pwa-store.firebaseapp.com/', // peu d'app, ne bouge plus !
@@ -114,7 +120,8 @@ $urls=array(
 // 'https://blog.koolsol.app/',
  'https://todo.koolsol.app/',
 // 'https://syllabes.koolsol.app/',  // ;-)
- 'https://svg.koolsol.app/',
+// 'https://svg.koolsol.app/',
+// 'https://grrd01.github.io/Dice/index.html',
  
 // 'https://memory.koolsol.app/',
 // 'https://todo.koolsol.app/',
@@ -605,10 +612,10 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
 //     echo __FILE__ . ' ' . __LINE__ . ' __LINE__ = <pre>' . var_export( $v1 , true ) . '</pre>' ; exit(0);
    }else{
-    if($datajson['categories']['performance']['score']>=0.95){
+    if($datajson['categories']['performance']['score']>=0.85){
      // lighthouse est un peu irrégulier sur les performances élevées,
      // en conséquence, j'arrondis quand elles sont bonnes, car on constate visuellement un affichage très rapide
-     // quand la performance est à 0.95 ou plus
+     // quand la performance est à 0.85 ou plus
      $datajson['categories']['performance']['score']=1;
      $lesManifestsEtUrls[$k1]['performance-score']='1.00';
     }
@@ -783,6 +790,7 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
 
      $score=substr($v1['global-score'],0,6);
+     $scoreNum=floatval($score);
      $rankGlobal++;
      if($scorePrec!=$score){
       $rank=$rankGlobal; 
@@ -795,11 +803,17 @@ if(sizeof($lesManifestsEtUrls)>0){
      }
      $couleurHex=dechex($couleur);
      $couleurHex=strlen($couleurHex)==1?'0'.$couleurHex:$couleurHex;
+     $textColor=$score=='1.0000'?'#333':'#c6ffcb';
      if($rank==1){
       $theColor=$couleurHex.'ff00';
       $theBorderColor='border:2px red solid;';
      }else{
+      
       $theColor='009400';
+      if($scoreNum>=0.9){
+       $theColor='4cdb4c';
+       $textColor='#333';
+      }
       $theBorderColor='border:2px #'.$couleurHex.'ff00'.' solid;';
       $theBorderColor='';
      }
@@ -907,8 +921,8 @@ if(sizeof($lesManifestsEtUrls)>0){
      $tt1=''.
       '    </div>'."\r\n".
       '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
-      '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
-      '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
+      '  <td data-label="rank | score : " class="centered" style="background-color:#'.$theColor.';'.$theBorderColor.';color:'.($textColor).';">'.$rank.'/'.sizeof($lesManifestsEtUrls).'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
+      '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($textColor).';">'                 .
       '<span title="pwa">' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                       . '</span>' .
       '|<span title="performance">'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))       . '</span>' .
       '|<span title="accessibility">'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))   . '</span>' .
@@ -919,8 +933,8 @@ if(sizeof($lesManifestsEtUrls)>0){
      $tt2=''.
       '    </div>'."\r\n".
       '   </div>'."\r\n".'  </td>' . "\r\n\r\n" .
-      '  <td data-label="class. | score : " class="centered" style="text-align:center;background-color:#'.$theColor.';'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.$rank.'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
-      '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'                 .
+      '  <td data-label="class. | score : " class="centered" style="text-align:center;background-color:#'.$theColor.';'.$theBorderColor.';color:'.($textColor).';">'.$rank.'  | '."".($score=='1.0000'?'100 💪':substr($score*100,0)) .'</td>' . "\r\n\r\n" .
+      '  <td data-label="scores : pwa , perf , accessi , b-pra. , seo" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.';color:'.($textColor).';">'                 .
       '<span title="pwa">' .($v1['pwa-score']           =='1.00'?'1':substr($v1['pwa-score'],1))                        . '</span>' .
       '|<span title="performance">'.($v1['performance-score']   =='1.00'?'1':substr($v1['performance-score'],1))        . '</span>' .
       '|<span title="accessibility">'.($v1['accessibility-score'] =='1.00'?'1':substr($v1['accessibility-score'],1))    . '</span>' .
@@ -943,8 +957,8 @@ if(sizeof($lesManifestsEtUrls)>0){
  //    $line.='  <td data-label="curl total time" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['curl-total_time'],2,'.',' ').'</td>';
      $line.=$tt1;
      $lisPoBlg1.=$tt1;
-     $tt1='  <td data-label="first paint" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
-     $tt2='  <td data-label="prem. affich" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($score=='1.0000'?'#333':'#c6ffcb').';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
+     $tt1='  <td data-label="first paint" style="background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($textColor).';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
+     $tt2='  <td data-label="prem. affich" style="text-align:center;background-color:#'.$theColor.';font-size:0.9em;'.$theBorderColor.'color:'.($textColor).';">'.number_format($v1['firstContentfulPaint'],0,'.',' ').'</td>';
      $line.=$tt1;
      $lisPoBlg1.=$tt2;
      
